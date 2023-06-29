@@ -25,22 +25,8 @@
     </header>
     <!-- 头部 -->
     <!-- <Search :head="head"></Search> -->
-    <section>
       <!-- 轮播图 -->
-      <div class="swiper mySwiper mt-[4.537vw] ">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="item in menu" :key="item.id">
-            <img
-              :src="item.pic"
-              alt=""
-              class="w-[92.22vw] h-[35.741vw] m-auto rounded-2xl"
-            />
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
-      <!-- <Banner :menu="menu"></Banner> -->
-
+      <Banner :menu="menu"></Banner>
       <!-- 每日推荐 -->
       <div class="flex">
         <div class="menu flex w-[88%] overflow-auto m-auto mt-[3vw]">
@@ -55,7 +41,7 @@
           <Icon icon="bi:chevron-right" class="inline-block text-[#fff]" />
         </div>
       </div>
-      <div class="flex w-[98vw] h-[40vw] overflow-auto lis menu mt-[3vw] ml-[2vw]">
+      <div class="flex w-[98vw] overflow-auto lis menu mt-[3vw] ml-[2vw]">
         <RecommendedSongs v-for="item in personalized" :key="item.id" :recommend="item" class="w-[29vw] h-[40vw] text-[1vw] mr-[2vw]"></RecommendedSongs>
       </div>
       <!-- <div>
@@ -83,59 +69,10 @@
       <RankingList :blocks="blocks"></RankingList>
       
       <!-- 热门话题 -->
-      <div>
-        <div
-          class="ml-[4vw] mt-[3vw] w-[90vw] flex m-auto justify-between items-center"
-        >
-            <span class="text-[#fff]">热门话题</span>
-          <Icon icon="uim:ellipsis-v" class="text-[#aea4a4]" />
-        </div>
-        <div class="flex">
-          <div class="flex items-center w-[90vw] h-[30vw] bg-[#4f5054] rounded-[2vw] ml-[4vw]"  indicator-color="white">
-            <div class="flex mr-[2vw] flex-col">
-              <div class="text-[white] flex">
-                <Icon icon="icon-park-solid:topic" class="text-[7vw]" />
-                <p>每人一首最近单曲循环的歌</p>
-              </div>
-              <div class="flex text-[white] items-center">
-                <p class="text-[1vw]">云音乐VIP:</p>
-                <span>近日推荐《世界杯》</span>
-              </div>
-            </div>
-            <img class="w-[21vw] rounded-[2vw]" src="https://p1.music.126.net/RZWN1SbPoDqhwhpmsjxPZg==/109951168112033444.jpg" alt="">
-          </div>
-        </div>
-      </div>
+      <HotTopic :hottopic="hottopic"></HotTopic>
 
       <!-- 音乐日历 -->
-      <div>
-        <div
-          class="ml-[4vw] mt-[3vw] w-[90vw] flex m-auto justify-between items-center"
-        >
-            <div class="flex items-center w-[21vw] justify-between">
-              <span class="text-[#fff] text-[3vw]">音乐日历</span>
-              <div class="flex items-center  rounded-[1.5vw] text-center bg-slate-400">
-                <span class="text-[#fff] text-[1vw]">更多</span>
-                <Icon icon="bi:chevron-right" class="text-[2vw] inline-block text-[#fff]" />
-              </div>
-            </div>
-          <Icon icon="uim:ellipsis-v" class="text-[#aea4a4]" />
-        </div>
-        <ul class="w-[90vw] mt-[2vw] h-[38vw] bg-[#4f5054] overflow-hidden rounded-[2vw] ml-[4vw]">
-          <li
-            v-for="item in Calendar"
-            :key="item.id"
-            class="flex justify-between items-center w-[90%] mx-auto  mb-[2vw] mt-[3vw]"
-          >
-            <div>
-              <div class="text-[#fff]">{{ dayjs(item.onlineTime).format('MM/DD ') }}</div>
-              <div class="text-[#fff]">{{ item.title }}</div>
-            </div>
-            <img :src="item.imgUrl" alt="" class="w-[15vw] h-[15vw] rounded-md"/>
-          </li>
-        </ul>
-      </div>
-    </section>
+      <MusicCalendar :Calendar="Calendar"></MusicCalendar>
   </div>
 </template>
 <script>
@@ -145,6 +82,10 @@ import {
   fetchSearchDefault,
   fetchSearchResult,
   fetchSearchSuggest,
+  Personalized,
+  DailyRecommened,
+  Banners,
+  Canlanders,
 } from '@/request';
 export default {
   data() {
@@ -169,6 +110,7 @@ export default {
     RecommendedSongs : () => import ('../components/RecommendedSongs.vue'),   //推荐歌单
     NewSongList : () => import ('../components/NewSongList.vue'),  //新歌新碟
     RankingList: () => import ('../components/RankingList.vue'),  //排行榜
+    HotTopic: () => import ('../components/HotTopic.vue'),  //热门话题
     MusicCalendar:() => import ('../components/MusicCalendar.vue') //音乐日历
   },
   methods: {
@@ -183,46 +125,22 @@ export default {
     const res = await fetchSearchDefault();
     this.defaultSearch = res.data.data;
     //每日推荐
-    axios
-      .get(
-        'https://netease-cloud-music-c2c1ys55f-cc-0820.vercel.app/homepage/dragon/ball'
-      )
-      .then((res) => {
-        this.menulist = res.data.data;
-      })
-      .catch((err) => console.log(err));
+    DailyRecommened().then((res) => {
+      this.menulist = res.data.data;
+    })
     //推荐歌单
-    axios
-      .get(
-        'https://netease-cloud-music-c2c1ys55f-cc-0820.vercel.app/personalized'
-      )
-      .then((res) => {
-        this.personalized = res.data.result;
-      })
-      .catch((err) => console.log(err));
-    //新歌新碟
-    axios
-      .get(
-        'https://netease-cloud-music-c2c1ys55f-cc-0820.vercel.app/homepage/block/page'
-      )
-      .then((res) => {
-        this.menu = res.data.data.blocks[0].extInfo.banners; //banner轮播
-        this.songList = res.data.data.blocks[5].creatives;  //新歌新碟 
-        this.blocks = res.data.data.blocks[3].creatives;  // 排行榜
-        // console.log(this.songList);
-      })
-      .catch((err) => console.log(err));
+    Personalized().then((res) => {
+      this.personalized = res.data.result;
+    })
+    Banners().then((res) => {
+      this.menu = res.data.data.blocks[0].extInfo.banners; //banner轮播
+      this.songList = res.data.data.blocks[5].creatives;  //新歌新碟 
+      this.blocks = res.data.data.blocks[3].creatives;  // 排行榜
+    })
       //日历
-      axios
-        .get(
-          'https://netease-cloud-music-api-five-roan-88.vercel.app/calendar?startTime=1687836243619&endTime=1687922643618'
-          )
-        .then((res) => {
-          // console.log(res);
-          this.Calendar = res.data.data.calendarEvents; 
-        })
-        .catch((err) => { console.log(err); });
-
+    Canlanders().then((res) => {
+      this.Calendar = res.data.data.calendarEvents; 
+    })    
   },
   watch: {
     userSearchKeywords: _.debounce(async function (keywords) {
@@ -231,11 +149,6 @@ export default {
     }, 300),
   },
 };
-var swiper = new Swiper('.mySwiper', {
-  pagination: {
-    el: '.swiper-container',
-  },
-});
 </script>
 <style>
   body {

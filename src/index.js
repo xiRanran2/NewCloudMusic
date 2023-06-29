@@ -19,21 +19,8 @@ const vm = new Vue({
     },
     render: h => h(HomeView),
     mounted() {
-      this.initSwiper();
+      // this.initSwiper();
     },
     methods: {
-      initSwiper() {
-        this.swiper = new Swiper(".mySwiper", {
-          autoplay: true, // 自动播放
-          disableOnInteraction: false, // 鼠标交互后不停止自动播放
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-            renderBullet: function (index, className) {
-              return '<span class="' + className + '">'  + "</span>";
-            },
-          },
-        });
-      }
     }
 });

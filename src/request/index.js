@@ -19,3 +19,13 @@ export const fetchSearchResult = (params) =>
   http.get('/search', { params });
 export const fetchSearchSuggest = (keywords) => http.get('/search/suggest',{params:{keywords}})
 
+//每日推荐
+export const DailyRecommened = () => http.get('/homepage/dragon/ball')
+//推荐歌单
+export const Personalized = () => http.get('/personalized')
+
+// 轮播图  新歌新碟\数字专辑 排行榜
+export const Banners = () => http.get('/homepage/block/page')
+
+//日历
+export const Canlanders = () => http.get('/calendar?startTime=1687836243619&endTime=1687922643618')
