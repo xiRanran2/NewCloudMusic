@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="flex w-[98vw] overflow-auto lis menu mt-[3vw] ml-[2vw]">
-        <RecommendedSongs v-for="item in personalized" :key="item.id" :recommend="item" class="w-[29vw] h-[40vw] text-[1vw] mr-[2vw]"></RecommendedSongs>
+        <RecommendedSongs v-for="item in personalized" :key="item.id" :recommend="item" class="w-[29vw] text-[1vw] mr-[2vw]"></RecommendedSongs>
       </div>
       <!-- <div>
         <div class="ml-[4vw] mt-[3vw]">
