@@ -6,8 +6,8 @@
             <span class="text-[#fff]">热门话题</span>
           <Icon icon="uim:ellipsis-v" class="text-[#aea4a4]" />
         </div>
-        <div class="flex">
-          <div class="flex items-center w-[90vw] h-[30vw] bg-[#4f5054] rounded-[2vw] ml-[4vw]"  indicator-color="white">
+        <ul class="flex">
+          <li class="flex items-center w-[90vw] h-[30vw] bg-[#4f5054] rounded-[2vw] ml-[4vw]"  indicator-color="white">
             <div class="flex mr-[2vw] flex-col">
               <div class="text-[white] flex mb-[2vw]">
                 <Icon icon="icon-park-solid:topic" class="text-[6vw]" />
@@ -19,8 +19,8 @@
               </div>
             </div>
             <img class="w-[21vw] rounded-[2vw]" src="https://p1.music.126.net/RZWN1SbPoDqhwhpmsjxPZg==/109951168112033444.jpg" alt="">
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
 </template>
 

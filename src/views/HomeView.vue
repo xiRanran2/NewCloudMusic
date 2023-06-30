@@ -2,7 +2,9 @@
   <div>
     <header class="w-[97vw] h-[10vw] relative mt-4">
       <div class="flex justify-around items-center">
-        <Icon icon="pepicons-pop:menu" color="white" class="text-[6vw]" />
+        <span @click="show = !show">
+          <Icon icon="pepicons-pop:menu" color="white" class="text-[6vw]" />
+        </span>
         <div class="relative">
           <input
             type="text"
@@ -10,18 +12,24 @@
             v-model="userSearchKeywords"
             class="w-[70vw] h-[6vw] rounded-3xl pl-6 border-amber-400"
           />
-          <Icon
-            icon="carbon:search"
-            color="Seashell3"
-            class="text-[6vw] absolute bottom-0 left-[4px]"
-            @click.native="searchHandler(userSearchKeywords)"
-          />
+            <Icon
+              icon="carbon:search"
+              color="Seashell3"
+              class="text-[6vw] absolute bottom-0 left-[4px]"
+              @click.native="searchHandler(userSearchKeywords)"
+            />
         </div>
         <Icon icon="ph:microphone-bold" color="white" class="text-[6vw]" />
         <ul v-if="searchSuggestList.length" class="absolute z-50 mb-[0.5vw] top-[8vw] left-[16vw] text-[2vw] ">
           <li v-for="item in searchSuggestList" :key="item.id" @click="searchHandler(item.name)" class="w-[60vw] mb-[1vw] z-99 text-white bg-pink-700">{{item.name}}</li>
         </ul>
       </div>
+      <van-popup
+        v-model="show"
+        closeable
+        position="left"
+        :style="{ width: '70%',height:'100%' , backgroundColor: 'rgb(55 38 38)' }"
+      />
     </header>
     <!-- 头部 -->
     <!-- <Search :head="head"></Search> -->
@@ -35,34 +43,8 @@
       </div>
 
       <!-- 推荐歌单 -->
-      <div>
-        <div class="ml-[4vw] mt-[3vw]">
-          <span class="text-[#fff]">推荐歌单</span>
-          <Icon icon="bi:chevron-right" class="inline-block text-[#fff]" />
-        </div>
-      </div>
-      <div class="flex w-[98vw] overflow-auto lis menu mt-[3vw] ml-[2vw]">
-        <RecommendedSongs v-for="item in personalized" :key="item.id" :recommend="item" class="w-[29vw] text-[1vw] mr-[2vw]"></RecommendedSongs>
-      </div>
-      <!-- <div>
-        <div class="ml-[4vw] mt-[3vw]">
-          <span class="text-[#fff]">推荐歌单</span>
-          <Icon icon="bi:chevron-right" class="inline-block text-[#fff]" />
-        </div>
-      </div>
-      <ul
-        class="flex w-[98vw] h-[40vw] overflow-auto lis menu mt-[3vw] ml-[2vw]"
-      >
-        <li
-          v-for="item in personalized"
-          :key="item.id"
-          class="w-[29vw] h-[40vw] text-[1vw] mr-[2vw]"
-        >
-          <img :src="item.picUrl" class="w-[29vw] h-[30vw] rounded-[3vw]" />
-          <p class="text-[#fff]">{{ item.name }}</p>
-        </li>
-      </ul> -->
-      <!-- <RecommendedSongs :personalized="personalized"></RecommendedSongs> -->
+      <RecommendedSongs :personalized="personalized"></RecommendedSongs>
+
       <!-- 新歌新碟 -->
       <NewSongList :songList="songList"></NewSongList>
       <!-- 排行榜 -->
@@ -101,6 +83,7 @@ export default {
       userSearchKeywords: '',
       defaultSearch: {},
       searchSuggestList: [],
+      show:false,
     };
   },
   components:{
