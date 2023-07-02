@@ -4,7 +4,7 @@
       ><img
         :src="item.pic"
         alt=""
-        class="rounded-[5vw] w-[90vw] h-[36vw] ml-[2vw] mt-[2vw]"
+        class="rounded-[5vw] w-[90vw] h-[36vw] m-auto mt-[2vw]"
       />
     </van-swipe-item>
   </van-swipe>
