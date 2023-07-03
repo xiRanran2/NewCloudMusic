@@ -90,56 +90,56 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      visible: 0,
-      // resourceData: '',
-      bannerPic: [],
-      personalized:[],
-      show: false,
-    };
-  },
-  name: 'RecommendedSongs',
-  props: ['personalized','bannerPic'],
-  mounted(){
-    this.animateItems()
-  },
-  methods:{
-    animateItems() {
-      setInterval(() => {
-        this.visible++;
-        if (this.visible === this.bannerPic.length) {
-          this.visible = 0;
-        }
-        this.resourceData =
-          this.bannerPic[this.visible].uiElement.mainTitle.title;
-      }, 5000);
+  export default {
+    data() {
+      return {
+        visible: 0,
+        // resourceData: '',
+        bannerPic: [],
+        personalized:[],
+        show: false,
+      };
     },
-  }
-};
+    name: 'RecommendedSongs',
+    props: ['personalized','bannerPic'],
+    mounted(){
+      this.animateItems()
+    },
+    methods:{
+      animateItems() {
+        setInterval(() => {
+          this.visible++;
+          if (this.visible === this.bannerPic.length) {
+            this.visible = 0;
+          }
+          this.resourceData =
+            this.bannerPic[this.visible].uiElement.mainTitle.title;
+        }, 5000);
+      },
+    }
+  };
 </script>
 
 <style scoped>
-.abc-enter{
-  opacity: 0;
-  transform: translateY(100%) scale(.7);
-}
-.abc-enter-active{
-  transition: all ease-in-out 1s;
-}
-.abc-enter-to{
-  opacity: 1;
-  transform: translateY(0%) scale(1);
-}
+  .abc-enter{
+    opacity: 0;
+    transform: translateY(100%) scale(.7);
+  }
+  .abc-enter-active{
+    transition: all ease-in-out 1s;
+  }
+  .abc-enter-to{
+    opacity: 1;
+    transform: translateY(0%) scale(1);
+  }
 
-.abc-leave{
-  transform: translateY(0) scale(1);
-}
-.abc-leave-active{
-  transition: all ease-in-out 1s;
-}
-.abc-leave-to{
-  transform: translateY(-100%) scale(.7);
-}
-</style>>
+  .abc-leave{
+    transform: translateY(0) scale(1);
+  }
+  .abc-leave-active{
+    transition: all ease-in-out 1s;
+  }
+  .abc-leave-to{
+    transform: translateY(-100%) scale(.7);
+  }
+</style>

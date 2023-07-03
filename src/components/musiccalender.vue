@@ -14,7 +14,7 @@
       <!-- 音乐日历 -->
       <ul class=" rounded-[2vw] w-[89vw] ml-[3vw] mt-[2vw] bg-[#4f5054] dark:bg-[rgb(232,211,210)]">
         <li
-          class="flex items-center justify-around"
+          class="flex items-center justify-around mb-[2vw]"
           v-for="item in name"
           :key="item.id"
         >

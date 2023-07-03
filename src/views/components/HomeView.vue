@@ -580,6 +580,7 @@ export default {
       playlists: [],
       menulist: [],
       personalized: [],
+      bannerPic: [],
       ranking: [],
       songList: [],
       blocks: [],
@@ -588,7 +589,6 @@ export default {
       userSearchKeywords: '',
       defaultSearch: {},
       searchSuggestList: [],
-      bannerPic: [],
       drawerList: false,
       show: false,
       resourceData: '',
@@ -632,9 +632,9 @@ export default {
       this.blocks = res.data.data.blocks[3].creatives; // 排行榜
       this.personalized = res.data.data.blocks[1].creatives.slice(1); //推荐歌单
       this.bannerPic = res.data.data.blocks[1].creatives[0].resources; //小轮播数据
-      this.hottopic = res.data.data.blocks[4].creatives
+      this.hottopic = res.data.data.blocks[4].creatives  //热门话题
       // this.resourceData = this.bannerPic[0].uiElement.mainTitle.title;
-      console.log(this.hottopic);
+      // console.log(this.hottopic);
     });
     // HotTopics().then((res) => {
     //   this.hottopic = res.data.data;

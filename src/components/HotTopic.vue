@@ -7,7 +7,7 @@
       <Icon icon="uim:ellipsis-v" class="text-[#aea4a4] dark:text-[#4b4545]" />
     </div>
     <div class="scroll-wrapper ml-[1vw] w-[89vw] rounded-[2vw] overflow-hidden" ref="scroll">
-      <ul class="scroll-content flex w-[252vw] m-[2vw] ml-[2vw]">
+      <ul class="scroll-content flex w-[252vw] m-[2vw] ml-[4vw]">
         <li class="scroll-item rounded-[2vw] w-[60vw]  h-[28vw] bg-[#d1b278]">
           <div>
             <div
@@ -106,24 +106,6 @@ import BScroll from '@better-scroll/core';
 export default {
   name: 'HotTopic',
   props: ['hottopic'],
-  // data () {
-  //   return {
-  //     emojis: [
-  //       '👉🏼 😁 😂 🤣 👈🏼',
-  //       '😄 😅 😆 😉 😊',
-  //       '😫 😴 😌 😛 😜',
-  //       '👆🏻 😒 😓 😔 👇🏻',
-  //       '😑 😶 🙄 😏 😣',
-  //       '😞 😟 😤 😢 😭',
-  //       '🤑 😲 ☹️ 🙁 😖',
-  //       '👍 👎 👊 ✊ 🤛',
-  //       '☝️ ✋ 🤚 🖐 🖖',
-  //       '👍🏼 👎🏼 👊🏼 ✊🏼 🤛🏼',
-  //       '☝🏽 ✋🏽 🤚🏽 🖐🏽 🖖🏽',
-  //       '🌖 🌗 🌘 🌑 🌒'
-  //     ]
-  //   }
-  // },
   mounted() {
     this.init();
   },
