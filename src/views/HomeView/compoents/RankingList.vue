@@ -7,7 +7,9 @@
             <span class="text-[#fff] dark:text-[#000] ">排行榜</span>
             <Icon icon="bi:chevron-right" class="inline-block text-[#fff] dark:text-[#000] " />
           </div>
-          <Icon icon="uim:ellipsis-v" class="text-[#aea4a4] dark:text-[#4b4545]" />
+          <span @click="show = !show">
+            <Icon icon="uim:ellipsis-v" class="text-[#aea4a4] dark:text-[#4b4545]" />
+          </span>
         </div>
         <van-swipe
           class="my-swipe pl-[2vw]"
@@ -18,7 +20,7 @@
           <van-swipe-item v-for="item in blocks" :key="item.id">
             <div
               :key="item.id"
-              class="p-[2vw] m-[2vw] overflow-hidden w-[90vw]  h-[50vw] bg-[#4f5054] dark:bg-[rgb(232,211,210)] rounded-[2vw] scroll-item"
+              class="p-[2vw] m-[2vw] overflow-hidden w-[90vw]  h-[50vw] bg-[#272930] dark:bg-[#fff] rounded-[2vw] scroll-item"
               ref="song"
             >
               <div class="flex justify-between w-[100%]">
@@ -75,11 +77,46 @@
             </div>
           </van-swipe-item>
         </van-swipe>
+        <van-popup
+          v-model="show"
+          closeable
+          position="bottom"
+          :style="{ height: '25%', backgroundColor: '#7d7373' }"
+          
+          round
+        >
+          <p class="text-[#e5e7eb] text-[1vw] p-[4vw]">排行榜</p>
+          <ul class="text-[white]">
+            <li
+              class="text-[5vw] w-[31vw] h-[9vw] flex justify-evenly items-center ml-[3vw]"
+            >
+              <Icon icon="icon-park-outline:good-one" color="white" />
+              <span>优先推选</span>
+            </li>
+            <li
+              class="text-[5vw] w-[31vw] h-[9vw] flex justify-evenly items-center ml-[3vw]"
+            >
+              <Icon icon="basil:heart-off-outline" color="white" />
+              <span>减少推荐</span>
+            </li>
+            <li
+              class="text-[5vw] w-[31vw] h-[9vw] flex justify-evenly items-center ml-[3vw]"
+            >
+              <Icon icon="mingcute:more-4-line" color="white" />
+              <span>更多内容</span>
+            </li>
+          </ul>
+        </van-popup>
     </div>
 </template>
 
 <script>
     export default{
+      data(){
+        return {
+          show: false,
+        }
+      },
         name:'RankingList',
         props:['blocks']
     }

@@ -46,3 +46,9 @@ let end = new Date(
 );
 export const Calendar = () =>
   http.get(`/calendar?startTime=${start.getTime()}&endTime=${end.getTime()}`);
+
+
+export const GuessLike = () => http.get('/search/hot/detail')
+// export const TopListDetail = () => http.get('/playlist/detail')
+
+// export const Lists = () => http.get('/toplist/detail')

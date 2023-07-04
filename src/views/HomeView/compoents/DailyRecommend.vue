@@ -1,6 +1,6 @@
 <template>
     <div :class="{ dark: switchCheckStatus }">
-        <span class="absolute text-[4vw] top-[5vw] left-[6vw] text-[#aea4a4] dark:text-[rgb(225,201,201)] z-[10] nowdate"></span>
+        <span class="absolute text-[4vw] top-[5.3vw] left-[6vw] text-[#1a1c23] dark:text-[#fff] z-[10] nowdate"></span>
         <img :src="$attrs.daily.iconUrl" class="red-image w-[15vw] h-[15vw]" />
         <p class="text-[1vw] text-[#aea4a4] dark:text-[#000] w-[15vw] text-center">
             {{ $attrs.daily.name }}

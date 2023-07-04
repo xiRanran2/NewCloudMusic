@@ -3,13 +3,17 @@
     <transition :name="direction" :class="{ dark: switchCheckStatus }">
       <div
         v-show="visible"
-        class="w-screen h-[100%] bg-[#594f4f] fixed z-[999] overflow-auto dark:bg-[#bfa5a5]"
+        class="w-screen h-[100%] bg-[#1a1c23] fixed z-[999] dark:bg-[#f1f1f1]"
         :style="[drawerContentStyle, { width }]"
       >
         <div>
           <slot name="header">
-            <div class="fixed w-[75%] bg-[#594f4f] flex justify-between items-center dark:bg-[#bfa5a5]">
-              <p class="flex items-center text-white m-[1vw] p-[1vw]">
+            <div
+              class="fixed w-[75%] bg-[#1a1c23] flex justify-between items-center dark:bg-[#fff] z-[99]"
+            >
+              <p
+                class="flex items-center text-white dark:text-[#000] m-[1vw] p-[1vw]"
+              >
                 <img
                   class="w-[6vw] h-[6vw] rounded-[50%]"
                   src="https://fastly.picsum.photos/id/211/1920/1280.jpg?hmac=5feWJpfa59_r1yi4NCuTxY9IWrNWZqEUDIAwrtKId9s"
@@ -18,13 +22,13 @@
                 <span class="ml-[2vw]">ranran</span>
                 <Icon
                   icon="simple-line-icons:arrow-up"
-                  class="text-[#fff] text-[3vw]"
+                  class="text-[#fff] text-[3vw] dark:text-[#000]"
                   :rotate="1"
                 />
               </p>
               <Icon
                 icon="mdi:line-scan"
-                class="text-[#fff] mr-[4vw] text-[5vw]"
+                class="text-[#fff] mr-[4vw] text-[5vw] dark:text-[#000]"
               />
             </div>
           </slot>
@@ -49,8 +53,8 @@ export default {
       type: Boolean,
       required: true,
     },
-    model:{
-      prop:'val',
+    model: {
+      prop: 'val',
     },
     title: {
       type: String,

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[60px] h-[30px] rounded-[15px]"
+    class="w-[60px] h-[30px] mr-[2vw] rounded-[15px]"
     :class="`{
         ${value1 ? 'bg-red-300' : 'bg-black'}
     }`"

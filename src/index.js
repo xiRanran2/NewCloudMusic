@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import './index.css';
-// import './swiper-bundle.min.js'
 import { Icon } from '@iconify/vue2';
-import HomeView from '@/views/components/HomeView.vue';
+// import HomeView from '@/views/HomeView/HomeView.vue';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Drawer from '@/components/Drawer.vue'
-import Switch from '@/components/Switch.vue'
+import Drawer from '@/components/Drawer/Drawer.vue'
+import Switch from '@/components/Switch/Switch.vue'
 import { Swipe, SwipeItem } from 'vant';
+import App from '@/App.vue';
+import router from './router';
 
 Vue.use(Swipe);
 Vue.use(SwipeItem);
@@ -23,10 +24,13 @@ Vue.use(Vant)
 Vue.component('Icon', Icon);
 const vm = new Vue({
     el: '#app',
+    router,
+    components: { App },
+    template: '<App/>',
     data: {
       swiper: null
     },
-    render: h => h(HomeView),
+    // render: h => h(HomeView),
     mounted() {
       // this.initSwiper();
     },

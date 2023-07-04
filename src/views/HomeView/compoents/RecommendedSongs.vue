@@ -10,14 +10,14 @@
       </span>
     </div>
     
-    <div class="flex w-[98vw] overflow-auto lis menu mt-[3vw] ml-[2vw]"> 
+    <div class="flex w-[90vw] overflow-auto lis menu mt-[3vw] ml-[2vw]"> 
       <ul
-        class="flex w-[98vw] h-[40vw] overflow-auto lis menu mt-[3vw] ml-[2vw]"
+        class="flex w-[90vw] h-[40vw] overflow-auto lis menu mt-[3vw] ml-[2vw]"
       >
       <div class="w-[31vw] h-[31vw]  mr-[2vw] ">
         <div class="w-[31vw] h-[31vw]  overflow-hidden relative rounded-[3vw]">
           <div class="absolute top-[4%] right-[8%] font-[800] text-[#fff] dark:text-[#000] flex items-center z-30">
-            <Icon icon="ion:infinite-outline" class="text-[#fff] dark:text-[#000] w-[6vw] h-[6vw]"/>
+            <Icon icon="ion:infinite-outline" class="text-[#fff] dark:text-[#fff] w-[6vw] h-[6vw]"/>
           </div>
           <transition name="abc" v-for="(item, index) in bannerPic" :key="item.id">
             <div v-if="visible === index" class="absolute top-0 left-0&quot;" >
