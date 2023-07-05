@@ -511,8 +511,8 @@
               </div>
             </div>
             <!-- 退出登录 -->
-            <div class="w-[72vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw] mt-[2vw] ml-[2vw] m-[1vw] dark:bg-[#fff]">
-               <div class="w-[60vw] text-[red] text-center p-[10vw]">退出登录</div>
+            <div class="w-[63vw] h-[13vw] leading-[13vw] m-auto w dark:text-[#060505] bg-[#272930] rounded-[2vw] m[2vw] dark:bg-[#fff]">
+               <div class="w-[63vw] text-[red] text-center ">退出登录</div>
             </div>
           </div>
         </div>

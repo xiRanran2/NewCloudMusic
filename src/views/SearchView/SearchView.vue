@@ -3,8 +3,9 @@
     :class="{ dark: switchCheckStatus }"
     class="text-white bg-[#1a1c23] dark:bg-[#f1f1f1]"
   >
+    <!-- 头部 -->
     <div class="">
-      <header class="w-[90vw] m-auto h-[10vw] relative p-[1vw]">
+      <header class="w-[100%] m-auto h-[10vw]  px-[4vw] fixed top-0 left-0 z-[99] bg-[#1a1c23]">
         <div class="flex justify-around items-center pt-[2vw]">
           <span @click="HomeView">
             <Icon
@@ -69,51 +70,54 @@
         </li>
       </ul>
     </div>
-    <!-- 猜你喜欢 -->
-    <div>
-      <div class="w-[85vw] flex m-auto mt-[3vw] justify-between">
-        <span>猜你喜欢</span>
-        <Icon icon="material-symbols:refresh" color="#ccc" class="text-[6vw]" @click.native="fn"/>
-      </div>
-      <div class="mt-[3vw] ml-[7vw] text-[1vw] flex">
-        <div v-for="item in guessyourlikeArr" :key="item.id">
-            <span  class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw]">{{ item.searchWord }}</span>
+    <!-- 内容 -->
+    <div class="mt-[3vw]">
+      <!-- 猜你喜欢 -->
+      <div class="">
+        <div class="w-[85vw] flex m-auto  justify-between">
+          <span>猜你喜欢</span>
+          <Icon icon="material-symbols:refresh" color="#ccc" class="text-[6vw]" @click.native="fn"/>
+        </div>
+        <div class="mt-[3vw] ml-[7vw] text-[1vw] flex">
+          <div v-for="item in guessyourlikeArr" :key="item.id">
+              <span  class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw]">{{ item.searchWord }}</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 排行榜 -->
-    <div class=" ml-[3vw]">
-      <van-swipe :loop="false" :width="270">
-        <van-swipe-item
-          v-for="item in pNodes"
-          :key="item.id"
-        >
-          <div
-          class="flex flex-col w-[62vw] rounded-[3vw] mt-[4vw]  bg-[#31333a] mr-[2vw]">
-            <div class="flex w-[62vw] m-auto p-[2vw] border-b border-[#41434a]">
-              <h1 class="">
-                {{ item.name }}
-              </h1>
-              <span class="flex items-center text-[#ccc] bg-[#514c4c] p-[0.5vw] text-[1vw] rounded-[3vw] ml-[4vw]">
-                播放
-                <Icon icon="ion:play" color="white" class="text-[4vw]" />
-              </span>
-            </div>
-            <div class="mt-[3vw]">
-              <div v-for="(items, indexs) in item.tracks.slice(0, 20)" :key="items.id" class="flex text-[2vw] h-[7vw]">
-                <span v-if="indexs + 1 <= 3" class="text-[red] font-extrabold ml-[6vw]">{{
-                  indexs + 1
-                }}</span>
-                <span v-if="indexs + 1 > 3" class="text-[#abadb4] font-extrabold ml-[6vw]">{{
-                  indexs + 1
-                }}</span>
-                <p class="ml-[2vw] w-[54vw]  truncate">{{ items.name }}</p>
+      <!-- 排行榜 -->
+      <div class=" ml-[3vw]">
+        <van-swipe :loop="false" :width="270">
+          <van-swipe-item
+            v-for="item in pNodes"
+            :key="item.id"
+          >
+            <div
+            class="flex flex-col w-[62vw] rounded-[3vw] mt-[4vw]  bg-[#31333a] mr-[2vw]">
+              <div class="flex w-[62vw] m-auto p-[2vw] border-b border-[#41434a]">
+                <h1 class="">
+                  {{ item.name }}
+                </h1>
+                <span class="flex items-center text-[#ccc] bg-[#514c4c] p-[0.5vw] text-[1vw] rounded-[3vw] ml-[4vw]">
+                  播放
+                  <Icon icon="ion:play" color="white" class="text-[4vw]" />
+                </span>
+              </div>
+              <div class="mt-[3vw]">
+                <div v-for="(items, indexs) in item.tracks.slice(0, 20)" :key="items.id" class="flex text-[2vw] h-[7vw]">
+                  <span v-if="indexs + 1 <= 3" class="text-[red] font-extrabold ml-[6vw]">{{
+                    indexs + 1
+                  }}</span>
+                  <span v-if="indexs + 1 > 3" class="text-[#abadb4] font-extrabold ml-[6vw]">{{
+                    indexs + 1
+                  }}</span>
+                  <p class="ml-[2vw] w-[54vw]  truncate">{{ items.name }}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </van-swipe-item>
-      </van-swipe>
+          </van-swipe-item>
+        </van-swipe>
+      </div>
     </div>
   </div>
 </template>
@@ -158,7 +162,7 @@ export default {
     this.defaultSearch = res.data.data;
     GuessLike().then((res) => {
       this.guessyourlike = res.data.data;
-      this.guessyourlikeArr = this.guessyourlike.slice(0,5);
+      this.guessyourlikeArr = this.guessyourlike.slice(0,4);
       console.log(this.guessyourlike);
     });
     const res1 = await axios.get(
