@@ -52,3 +52,9 @@ export const GuessLike = () => http.get('/search/hot/detail')
 // export const TopListDetail = () => http.get('/playlist/detail')
 
 // export const Lists = () => http.get('/toplist/detail')
+
+//歌单详情头部
+export const songDetails = (params) => http.get(`/playlist/detail?id=${params}`)
+
+//歌单详情 列表
+export const playlistTracks = (params) => http.get(`/playlist/track/all?id=${params}`)

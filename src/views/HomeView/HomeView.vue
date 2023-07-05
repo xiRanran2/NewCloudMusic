@@ -623,6 +623,12 @@ export default {
         keywords: keywords || this.defaultSearch.realkeyword,
       });
     },
+    navigateToNextPage() {
+      this.$router.push({
+        path: '/next-page',
+        query: { color: '#fff' } // 设置颜色参数为红色 (#FF0000)
+      });
+    }
   },
   async created() {
     //获取搜索默认值

@@ -73,17 +73,12 @@
     <div>
       <div class="w-[85vw] flex m-auto mt-[3vw] justify-between">
         <span>猜你喜欢</span>
-        <Icon icon="material-symbols:refresh" color="#ccc" class="text-[6vw]" />
+        <Icon icon="material-symbols:refresh" color="#ccc" class="text-[6vw]" @click.native="fn"/>
       </div>
       <div class="mt-[3vw] ml-[7vw] text-[1vw] flex">
-        <template v-for="(item, index) in guessyourlike">
-          <div v-if="index < n" :key="item.id">
-            <span
-              class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw]"
-              >{{ item.searchWord }}</span
-            >
-          </div>
-        </template>
+        <div v-for="item in guessyourlikeArr" :key="item.id">
+            <span  class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw]">{{ item.searchWord }}</span>
+        </div>
       </div>
     </div>
 
@@ -91,22 +86,30 @@
     <div class=" ml-[3vw]">
       <van-swipe :loop="false" :width="270">
         <van-swipe-item
-          class="flex flex-col w-[50vw] rounded-[3vw] mt-[4vw] mr-[4vw] bg-[#31333a]"
           v-for="item in pNodes"
           :key="item.id"
         >
-          <h1 class="w-[56vw] m-auto p-[2vw] border-b border-[#41434a]">
-            {{ item.name }}
-          </h1>
-          <div class="mt-[3vw]">
-            <div v-for="(items, indexs) in item.tracks.slice(0, 20)" :key="items.id" class="flex text-[2vw] h-[7vw]">
-              <span v-if="indexs + 1 <= 3" class="text-[red] ml-[6vw]">{{
-                indexs + 1
-              }}</span>
-              <span v-if="indexs + 1 > 3" class="text-[#abadb4] ml-[6vw]">{{
-                indexs + 1
-              }}</span>
-              <p class="ml-[2vw] w-[54vw]  truncate">{{ items.name }}</p>
+          <div
+          class="flex flex-col w-[62vw] rounded-[3vw] mt-[4vw]  bg-[#31333a] mr-[2vw]">
+            <div class="flex w-[62vw] m-auto p-[2vw] border-b border-[#41434a]">
+              <h1 class="">
+                {{ item.name }}
+              </h1>
+              <span class="flex items-center text-[#ccc] bg-[#514c4c] p-[0.5vw] text-[1vw] rounded-[3vw] ml-[4vw]">
+                播放
+                <Icon icon="ion:play" color="white" class="text-[4vw]" />
+              </span>
+            </div>
+            <div class="mt-[3vw]">
+              <div v-for="(items, indexs) in item.tracks.slice(0, 20)" :key="items.id" class="flex text-[2vw] h-[7vw]">
+                <span v-if="indexs + 1 <= 3" class="text-[red] font-extrabold ml-[6vw]">{{
+                  indexs + 1
+                }}</span>
+                <span v-if="indexs + 1 > 3" class="text-[#abadb4] font-extrabold ml-[6vw]">{{
+                  indexs + 1
+                }}</span>
+                <p class="ml-[2vw] w-[54vw]  truncate">{{ items.name }}</p>
+              </div>
             </div>
           </div>
         </van-swipe-item>
@@ -129,13 +132,18 @@ export default {
       userSearchKeywords: '',
       defaultSearch: {},
       searchSuggestList: [],
-      guessyourlike: [],
-      n: 4,
+      guessyourlike: null,  //猜你喜欢的数据
+      guessyourlikeArr:[],  //数组
       pNodes: [],
       trackArr: [],
+      color: ''  //传入的颜色
     };
   },
   methods: {
+    fn(){
+      this.guessyourlike.push(...this.guessyourlike.splice(0,5));
+      this.guessyourlikeArr = this.guessyourlike.slice(0,5)
+    },
     HomeView() {
       this.$router.push('/HomeView');
     },
@@ -150,6 +158,8 @@ export default {
     this.defaultSearch = res.data.data;
     GuessLike().then((res) => {
       this.guessyourlike = res.data.data;
+      this.guessyourlikeArr = this.guessyourlike.slice(0,5);
+      console.log(this.guessyourlike);
     });
     const res1 = await axios.get(
       'https://netease-cloud-music-api-five-roan-88.vercel.app/toplist/detail'
@@ -163,6 +173,7 @@ export default {
       )
     );
     this.pNodes = playlist.map((item) => item.data.playlist).slice(0, 11);
+    this.color = this.$route.query.color || '#FFFFFF'; // 默认颜色为白色 (#FFFFFF)
   },
   watch: {
     userSearchKeywords: _.debounce(async function (keywords) {

@@ -52,6 +52,7 @@
           <img
             :src="item.uiElement.image.imageUrl"
             class="w-[29vw] h-[30vw] rounded-[3vw]"
+            @click="songDetails(item.resources[0].resourceId)"
           />
           <p class="text-[#fff] dark:text-[#130c0c] truncate">{{ item.uiElement.mainTitle.title }}</p>
         </li>
@@ -98,6 +99,7 @@
         bannerPic: [],
         personalized:[],
         show: false,
+        
       };
     },
     name: 'RecommendedSongs',
@@ -116,6 +118,10 @@
             this.bannerPic[this.visible].uiElement.mainTitle.title;
         }, 5000);
       },
+      songDetails(id){
+        // console.log(id)  //7487787817
+        this.$router.push({path:'/song',query:{id}});
+      }
     }
   };
 </script>
