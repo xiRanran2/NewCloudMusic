@@ -16,37 +16,38 @@
       </div>
     </header>
     <div class="mt-[15vw] dark:bg-[#966951] dark:text-[#fff]">
-        <div>
-          <!-- 歌曲类型 -->
+      <div>
+        <!--点击前的 歌曲类型 -->
+        <div v-if="terent">
           <div class="flex ml-[5vw]">
             <!-- 照片 -->
             <div class="relative w-[28vw] h-[28vw]">
-            <div
-                class="text-white dark:text-black flex items-center absolute top-[1vw] right-[1vw] z-[2]"
-            >
-                <Icon icon="ion:play" color="white" class="text-[3vw]" />
-                <span>{{
-                songlist.playCount > 10000
-                    ? Math.floor(songlist.playCount / 10000) + '万'
-                    : songlist.playCount
-                }}</span>
-            </div>
-            <div class="relative">
-                <div
-                class="w-[24vw] h-[4vw] bg-[#5c5c5c] dark:bg-[#a2755d] rounded-[4vw] absolute top-0 left-[2vw]"
-                ></div>
-                <img
-                :src="songlist.coverImgUrl"
-                class="w-[28vw] rounded-[4vw] absolute top-[1vw] left-[0vw] z-[2]"
-                />
-            </div>
+              <div
+                  class="text-white dark:text-black flex items-center absolute top-[1vw] right-[1vw] z-[2]"
+              >
+                  <Icon icon="ion:play" color="white" class="text-[3vw]" />
+                  <span>{{
+                  songlist.playCount > 10000
+                      ? Math.floor(songlist.playCount / 10000) + '万'
+                      : songlist.playCount
+                  }}</span>
+              </div>
+              <div class="relative">
+                  <div
+                  class="w-[24vw] h-[4vw] bg-[#5c5c5c] dark:bg-[#a2755d] rounded-[4vw] absolute top-0 left-[2vw]"
+                  ></div>
+                  <img
+                  :src="songlist.coverImgUrl"
+                  class="w-[28vw] rounded-[4vw] absolute top-[1vw] left-[0vw] z-[2]"
+                  />
+              </div>
             </div>
             <!-- 用户信息 -->
             <div class="flex flex-col m-[3vw] ">
               <!-- 标题 -->
               <div class="flex w-[57vw] justify-between">
                   <p class="font-extrabold">{{ songlist.name }}</p>
-                  <span
+                  <span @click="lb"
                   class="w-[5vw] h-[4vw] bg-[#626262] dark:bg-[#e7cebf]  rounded-[50%] flex items-center mt-[1vw] "
                   >
                     <Icon icon="ep:arrow-up" :rotate="2" />
@@ -79,7 +80,27 @@
                   </p>
               </div>
             </div>
+          </div>
         </div>
+        <!-- 点击后的 -->
+        <div v-if="display">
+          <p class="flex  pl-[4vw] pr-[4vw] mt-[12vw]" style="justify-content: space-between;">
+              <span class="text-[2vw] text-[#aba59d]">喜欢这个歌单的用户也听了</span>
+              <span class="w-[5vw] h-[5vw] rounded-[50%] pr-[0.2vw] bg-[#c6e7c0] flex"  @click="lb1" style="align-items: center; justify-content:center" >
+                  <Icon icon="ep:arrow-up"  class="text-[#fff] text-[3.5vw]"  />
+              </span>
+          </p>
+          <div class="overflow-auto lunbo pl-[2vw] pr-[2vw] mt-[3vw]">
+              <div class=" flex " :style="`width:${music?.length * 25 + 25}vw`"  style="justify-content: space-around;">
+                  <div v-for="(item) in music" :key="item.tom" class="w-[28vw]">
+                      <img :src="item.coverImgUrl" alt="" class="w-[28vw] h-[28vw] rounded-[4vw]">
+                      <p class=" line-clamp-2 text-[#fff] text-[2vw] mt-[2vw]">{{ item.name }}</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+
         <!-- 评论描述 -->
         <div class="text-[#bebebe] flex m-auto items-center ml-[5vw] mt-[3vw]">
             <p
@@ -130,75 +151,76 @@
                 </div>
             </div>
         </div>
-        </div>
+      </div>
     
-        <!-- 播放列表 -->
-        <div class=" bg-[#636363] rounded-[4vw] m-auto mt-[4vw] dark:bg-[#fff] relative">
-            <div class="sticky top-[14.5vw] ">
-              <!-- 头部 -->
-              <div
-              class="absolute w-[100%] rounded-t-[4vw] items-center h-[14vw] leading-[14vw] bg-[#636363] dark:bg-[rgb(291,278,452)] pl-[4vw] pr-[5vw] flex m-auto justify-between"
-              >
-              <div class="flex items-center sticky z-[3] dark:text-[black]">
-                  <span
-                  class="inline-block w-[6vw] h-[6vw] bg-[red] rounded-[50%] relative"
-                  >
-                  <Icon
-                      icon="ri:play-fill"
-                      color="white"
-                      class="absolute top-[1vw] left-[1vw]"
-                  />
-                  </span>
-                  <span class="ml-[3vw]">播放全部</span>
-                  <span class="text-[1vw] ml-[2vw] mt-[1vw]"
-                  >({{ songlistAll.length }})</span
-                  >
-              </div>
-              <div class="text-[6vw] flex">
-                  <Icon icon="formkit:downloadcloud" color="white" class="mr-[4vw]" />
-                  <Icon icon="solar:list-down-outline" color="white" />
-              </div>
-              </div>
-            </div>
-            <!-- 列表 -->
-            <ul class="ml-[5vw] pt-[14.5vw]">
-            <li
-                v-for="(item, indexs) in songlistAll"
-                :key="item.key"
-                class="flex w-[90%] h-[15vw] items-center justify-between  truncate"
+      <!-- 播放列表 -->
+      <div class=" bg-[#636363] rounded-[4vw] m-auto mt-[4vw] dark:bg-[#fff] relative">
+          <div class="sticky top-[14.5vw] ">
+            <!-- 头部 -->
+            <div
+            class="absolute w-[100%] rounded-t-[4vw] items-center h-[14vw] leading-[14vw] bg-[#636363] dark:bg-[rgb(291,278,452)] pl-[4vw] pr-[5vw] flex m-auto justify-between"
             >
-                <div class="flex items-center">
-                    <span class="text-[#9a9a9a]">{{ indexs + 1 }}</span>
-                    <div class="flex ml-[4vw] flex-col truncate dark:text-[#000]">
-                        <p class="w-[60vw] truncate">{{ item.name }}</p>
-                        <div class="flex w-[60vw]">
-                            <span
-                            class="text-[#c1c1c1] text-[1vw]"
-                            v-for="items in item.ar"
-                            :key="items"
-                            >
-                            {{ items.name }}&nbsp;
-                            </span>
-                            <span class="text-[#c1c1c1] text-[1vw] w-[17vw] truncate"
-                            >-{{ item.al.name }}</span
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="flex text-[#aeaeae]">
-                <Icon icon="bi:play-btn" class="mr-[5vw]" />
-                <Icon icon="uil:ellipsis-v" class=" " />
-                </div>
-            </li>
-            </ul>
-        </div>
+            <div class="flex items-center sticky z-[3] dark:text-[black]">
+                <span
+                class="inline-block w-[6vw] h-[6vw] bg-[red] rounded-[50%] relative"
+                >
+                <Icon
+                    icon="ri:play-fill"
+                    color="white"
+                    class="absolute top-[1vw] left-[1vw]"
+                />
+                </span>
+                <span class="ml-[3vw]">播放全部</span>
+                <span class="text-[1vw] ml-[2vw] mt-[1vw]"
+                >({{ songlistAll.length }})</span
+                >
+            </div>
+            <div class="text-[6vw] flex">
+                <Icon icon="formkit:downloadcloud" color="white" class="mr-[4vw]" />
+                <Icon icon="solar:list-down-outline" color="white" />
+            </div>
+            </div>
+          </div>
+          <!-- 列表 -->
+          <ul class="ml-[5vw] pt-[14.5vw]">
+          <li
+              v-for="(item, indexs) in songlistAll"
+              :key="item.key"
+              class="flex w-[90%] h-[15vw] items-center justify-between  truncate"
+          >
+              <div class="flex items-center">
+                  <span class="text-[#9a9a9a]">{{ indexs + 1 }}</span>
+                  <div class="flex ml-[4vw] flex-col truncate dark:text-[#000]">
+                      <p class="w-[60vw] truncate">{{ item.name }}</p>
+                      <div class="flex w-[60vw]">
+                          <span
+                          class="text-[#c1c1c1] text-[1vw]"
+                          v-for="items in item.ar"
+                          :key="items"
+                          >
+                          {{ items.name }}&nbsp;
+                          </span>
+                          <span class="text-[#c1c1c1] text-[1vw] w-[17vw] truncate"
+                          >-{{ item.al.name }}</span
+                          >
+                      </div>
+                  </div>
+              </div>
+              <div class="flex text-[#aeaeae]">
+              <Icon icon="bi:play-btn" class="mr-[5vw]" />
+              <Icon icon="uil:ellipsis-v" class=" " />
+              </div>
+          </li>
+          </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Sticky } from 'vant';
-import store from 'storejs'
+import store from 'storejs';
+import {Songdeta,SongDataList,musicSlider} from '../../request/index.js'
 Vue.use(Sticky);
 import { songDetails, playlistTracks } from '../../request/index.js';
 export default {
@@ -209,6 +231,10 @@ export default {
       Tag: [],
       songlistAll: [], //所有的歌单
       switchCheckStatus: null,
+      music:[],
+      terent:true,
+      display:false,
+
     };
   },
   created() {
@@ -226,6 +252,12 @@ export default {
       // let cl = res.data.songs;
       // console.log(cl);
     });
+    musicSlider(this.$route.query.id).then((res) => {
+      console.log(res)
+      this.music = res.data.playlists
+      console.log(this.music);
+    })
+
   },
   mounted () {//给window添加一个滚动滚动监听事件
     window.addEventListener('scroll', this.handleScroll)
@@ -234,6 +266,15 @@ export default {
     HomeView() {
       this.$router.push('/HomeView');
     },
+    lb(){
+        this.terent = !this.terent
+        this.display = !this.display
+    },
+    lb1(){
+        this.terent = !this.terent
+        this.display = !this.display
+    },
+
   },
 };
 </script>
@@ -248,5 +289,9 @@ header>.van-notice-bar{
 }
 .van-notice-bar__wrap .van-notice-bar__content{
   color: white;
+}
+.lunbo::-webkit-scrollbar {
+  height: 0px;
+  width: 20px;
 }
 </style>

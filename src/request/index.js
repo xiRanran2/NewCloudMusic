@@ -88,3 +88,5 @@ export const checkQrStatus = (key) => http.get('/login/qr/check',{params:{key,ti
 export const getUserAccount = () => http.get('/user/account');
 // 用户详情
 export const getUserDetail = (uid) => http.get('/user/detail',{params:{uid}});
+
+export const musicSlider = (params) => http.get(`related/playlist?id=${params}`)
