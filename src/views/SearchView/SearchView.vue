@@ -1,16 +1,15 @@
 <template>
   <div
     :class="{ dark: switchCheckStatus }"
-    class="text-white bg-[#1a1c23] dark:bg-[#f1f1f1] dark:text-[#1a1c23]"
+    class="text-white  dark:bg-[#f5f4f4] dark:text-[#1a1c23]"
   >
     <!-- 头部 -->
     <div class="">
-      <header class="w-[100%] m-auto h-[10vw]  px-[4vw] fixed top-0 left-0 z-[99] bg-[#1a1c23] dark:bg-[#f1f1f1]">
-        <div class="flex justify-around items-center pt-[2vw]">
+      <header class="w-[100%] m-auto h-[10vw]  px-[4vw] fixed top-0 left-0 z-[99] bg-[#1a1c23] dark:bg-[#f1f1f1] ">
+        <div class="flex justify-around items-center pt-[2vw] dark:text-[#000]">
           <span @click="HomeView">
             <Icon
               icon="material-symbols:navigate-before"
-              color="white"
               class="text-[8vw]"
             />
           </span>
@@ -23,12 +22,11 @@
             />
             <Icon
               icon="carbon:search"
-              color="Seashell3"
               class="text-[5vw] absolute bottom-[0.5vw] left-[1.5vw] text-[#615d5e] dark:text-[#000]"
               @click.native="searchHandler(userSearchKeywords)"
             />
           </div>
-          <span class="text-white">搜索</span>
+          <span class="">搜索</span>
           <ul
             v-if="searchSuggestList.length"
             class="absolute z-50 mb-[0.5vw] top-[8vw] left-[16vw] text-[2vw]"
@@ -71,16 +69,16 @@
       </ul>
     </div>
     <!-- 内容 -->
-    <div class="mt-[3vw]">
+    <div class="pt-[3vw] dark:bg-[#f5f4f4] mt-[-1vw]">
       <!-- 猜你喜欢 -->
-      <div class="">
+      <div class="dark:text-[#1a1c23]">
         <div class="w-[85vw] flex m-auto  justify-between">
           <span>猜你喜欢</span>
           <Icon icon="material-symbols:refresh" color="#ccc" class="text-[6vw]" @click.native="fn"/>
         </div>
         <div class="mt-[3vw] ml-[7vw] text-[1vw] flex">
           <div v-for="item in guessyourlikeArr" :key="item.id">
-              <span  class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw]">{{ item.searchWord }}</span>
+              <span  class="bg-[#5f5858] rounded-[3vw] p-[1.5vw] text-[#d8d3d3] mr-[2vw] dark:bg-[#f1f1f1] dark:text-[#0f0e0e]">{{ item.searchWord }}</span>
           </div>
         </div>
       </div>
@@ -93,14 +91,14 @@
             :key="item.id"
           >
             <div
-            class="flex flex-col w-[62vw] rounded-[3vw] mt-[4vw]  bg-[#31333a] mr-[2vw]">
+            class="flex flex-col w-[62vw] rounded-[3vw] mt-[4vw]  bg-[#31333a] dark:bg-[#f1f1f1] dark:text-[#0f0e0e] mr-[2vw]">
               <div class="flex w-[62vw] m-auto p-[2vw] border-b border-[#41434a]">
                 <h1 class="">
                   {{ item.name }}
                 </h1>
-                <span class="flex items-center text-[#ccc] bg-[#514c4c] p-[0.5vw] text-[1vw] rounded-[3vw] ml-[4vw]">
+                <span class="flex items-center text-[#ccc] dark:text-[#364756] bg-[#514c4c] dark:bg-[#dbdbdb] p-[0.5vw] text-[1vw] rounded-[3vw] ml-[4vw]">
                   播放
-                  <Icon icon="ion:play" color="white" class="text-[4vw]" />
+                  <Icon icon="ion:play"  class="text-[4vw]" />
                 </span>
               </div>
               <div class="mt-[3vw]">
@@ -111,7 +109,7 @@
                   <span v-if="indexs + 1 > 3" class="text-[#abadb4] font-extrabold ml-[6vw]">{{
                     indexs + 1
                   }}</span>
-                  <p class="ml-[2vw] w-[54vw]  truncate">{{ items.name }}</p>
+                  <p class="ml-[2vw] w-[54vw]  dark:text-[#0f0e0e]  truncate">{{ items.name }}</p>
                 </div>
               </div>
             </div>
@@ -148,7 +146,7 @@ export default {
   methods: {
     fn(){
       this.guessyourlike.push(...this.guessyourlike.splice(0,5));
-      this.guessyourlikeArr = this.guessyourlike.slice(0,5)
+      this.guessyourlikeArr = this.guessyourlike.slice(0,4)
     },
     HomeView() {
       this.$router.push('/HomeView');

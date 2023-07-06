@@ -511,7 +511,7 @@
               </div>
             </div>
             <!-- 退出登录 -->
-            <div @click="fn" class="w-[71vw] h-[13vw] leading-[13vw] ml-[2.5vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw]  dark:bg-[#fff]">
+            <div  @click="fn" class="w-[71vw] h-[13vw] leading-[13vw] ml-[2.5vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw]  dark:bg-[#fff]">
                <div class="w-[71vw] text-[red] text-center ">退出登录</div>
             </div>
           </div>
@@ -615,10 +615,29 @@ export default {
       Dialog({ title: '网易云音乐', message: '确定退出当前账号吗？' })
         .then(function () {
           // console.log('点击了确定');
-          this.$router.push('/Login');
+          // this.$router.push('/Login');
         })
         .catch(function () {
           // console.log('点击了取消');
+        });
+    },
+    openConfirmDialog() {
+      Dialog.confirm({
+        message: '确定退出当前账号吗?',
+      })
+        .then(() => {
+          // on confirm
+          console.log('Confirmed');
+          // 获取 __m__cookie 值
+          const mCookie = localStorage.getItem('__m__cookie');
+
+          // 移除 __m__cookie 键
+          localStorage.removeItem('__m__cookie');
+          this.$router.push('/Login');
+        })
+        .catch(() => {
+          // on cancel
+          console.log('Cancelled');
         });
     },
     init(name) {
@@ -637,12 +656,6 @@ export default {
         keywords: keywords || this.defaultSearch.realkeyword,
       });
     },
-    navigateToNextPage() {
-      this.$router.push({
-        path: '/next-page',
-        query: { color: '#fff' } // 设置颜色参数为红色 (#FF0000)
-      });
-    }
   },
   async created() {
     //获取搜索默认值
@@ -667,9 +680,9 @@ export default {
     Calendar().then((res) => {
       this.calendar = res.data.data.calendarEvents;
     });
-    const res1 = await getUserAccount();
+    // const res1 = await getUserAccount();
     // console.log(res1);   //用户信息
-    const detail = await getUserDetail()
+    // const detail = await getUserDetail()
     // console.log(detail)   //用户详情
 
     this.switchCheckStatus = store.get('switch')

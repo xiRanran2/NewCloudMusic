@@ -9,7 +9,7 @@
           class="text-[8vw]"
         />
       </span>
-      <van-notice-bar :text="songlist.name" class="text-[#fff] w-[58vw] dark:bg-[#966951]" />
+      <van-notice-bar :text="songlist.name" class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951]" />
       <div class="flex">
         <Icon icon="carbon:search" class="mr-[4vw]" />
         <Icon icon="uil:ellipsis-v"  />
@@ -242,6 +242,9 @@ export default {
 .menu::-webkit-scrollbar {
   height: 0rem;
   width: 1.25rem;
+}
+header>.van-notice-bar{
+  background-color: #444;
 }
 .van-notice-bar__wrap .van-notice-bar__content{
   color: white;

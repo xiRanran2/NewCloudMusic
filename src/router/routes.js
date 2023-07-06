@@ -6,7 +6,7 @@ export default [
     //路径重定向
     {
       path:'/',
-      redirect:'/HomeView'
+      redirect:'/Login'
     },
     {
       path:'/SearchView',
