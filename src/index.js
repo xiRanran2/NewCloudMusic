@@ -1,17 +1,20 @@
 import Vue from 'vue';
 import './index.css';
 import { Icon } from '@iconify/vue2';
-// import HomeView from '@/views/HomeView/HomeView.vue';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Drawer from '@/components/Drawer/Drawer.vue'
 import Switch from '@/components/Switch/Switch.vue'
 import { Swipe, SwipeItem } from 'vant';
 import App from '@/App.vue';
+import store from '@/store'
 import router from './router';
+
+
 
 Vue.use(Swipe);
 Vue.use(SwipeItem);
+// Vue.use(Dialog)
 dayjs.extend(relativeTime);
 Vue.prototype.dayjs = dayjs;
 Vue.component('Drawer',Drawer)
@@ -25,8 +28,12 @@ Vue.component('Icon', Icon);
 const vm = new Vue({
     el: '#app',
     router,
+    store,
     components: { App },
     template: '<App/>',
+    created(){
+      // console.log(this.$store) //每一个都能拿到state
+    },
     data: {
       swiper: null
     },
@@ -37,4 +44,5 @@ const vm = new Vue({
     methods: {
     }
 });
+// console.log(vm);
 

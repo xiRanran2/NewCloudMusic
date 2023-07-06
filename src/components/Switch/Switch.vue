@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import store from 'storejs'
 export default {
     //model主要是去配置v-model指令需要使用的屬性名 shijian
     model:{
@@ -31,7 +32,7 @@ export default {
     methods:{
         toggle(){
             this.$emit('input1',!this.value1)
-
+            store.set('switch',!this.value1)
         }
     }
 };

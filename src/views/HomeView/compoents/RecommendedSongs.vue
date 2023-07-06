@@ -99,7 +99,6 @@
         bannerPic: [],
         personalized:[],
         show: false,
-        
       };
     },
     name: 'RecommendedSongs',

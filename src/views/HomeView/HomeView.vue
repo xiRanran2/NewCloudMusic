@@ -511,8 +511,8 @@
               </div>
             </div>
             <!-- 退出登录 -->
-            <div class="w-[63vw] h-[13vw] leading-[13vw] m-auto w dark:text-[#060505] bg-[#272930] rounded-[2vw] m[2vw] dark:bg-[#fff]">
-               <div class="w-[63vw] text-[red] text-center ">退出登录</div>
+            <div @click="fn" class="w-[71vw] h-[13vw] leading-[13vw] ml-[2.5vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw]  dark:bg-[#fff]">
+               <div class="w-[71vw] text-[red] text-center ">退出登录</div>
             </div>
           </div>
         </div>
@@ -553,9 +553,11 @@
   </div>
 </template>
 <script>
+import Dialog from '../../components/Dialog';
 import axios from 'axios';
 import _ from 'lodash';
 import BScroll from '@better-scroll/core'
+import store from 'storejs'
 import {
   fetchSearchDefault,
   fetchSearchResult,
@@ -564,6 +566,8 @@ import {
   DailyRecommened,
   Banners,
   Calendar,
+  getUserAccount,
+  getUserDetail,
 } from '@/request';
 export default {
   data() {
@@ -580,11 +584,11 @@ export default {
       hottopic: [],
       userSearchKeywords: '',
       defaultSearch: {},
-      searchSuggestList: [],
+      searchSuggestList: [], 
       drawerList: false,
       show: false,
       resourceData: '',
-      switchCheckStatus: false,
+      switchCheckStatus: null,
     };
   },
   components: {
@@ -607,6 +611,16 @@ export default {
     this.bs.refresh();
   },
   methods: {
+    fn() {
+      Dialog({ title: '网易云音乐', message: '确定退出当前账号吗？' })
+        .then(function () {
+          // console.log('点击了确定');
+          this.$router.push('/Login');
+        })
+        .catch(function () {
+          // console.log('点击了取消');
+        });
+    },
     init(name) {
       this.bs = new BScroll(name, {
           scrollX: true,
@@ -639,17 +653,27 @@ export default {
       this.menulist = res.data.data;
     });
     Banners().then((res) => {
+      // console.log(res)
       this.menu = res.data.data.blocks[0].extInfo.banners; //banner轮播
-      this.songList = res.data.data.blocks[5].creatives; //新歌新碟
+      this.songList = res.data.data.blocks[2].creatives; //新歌新碟
       this.blocks = res.data.data.blocks[3].creatives; // 排行榜
       this.personalized = res.data.data.blocks[1].creatives.slice(1); //推荐歌单
       this.bannerPic = res.data.data.blocks[1].creatives[0].resources; //小轮播数据
       // this.hottopic = res.data.data.blocks[4].creatives; //热门话题
+      // console.log(this.personalized)
+      
     });
     //日历
     Calendar().then((res) => {
       this.calendar = res.data.data.calendarEvents;
     });
+    const res1 = await getUserAccount();
+    // console.log(res1);   //用户信息
+    const detail = await getUserDetail()
+    // console.log(detail)   //用户详情
+
+    this.switchCheckStatus = store.get('switch')
+
   },
   watch: {
     userSearchKeywords: _.debounce(async function (keywords) {

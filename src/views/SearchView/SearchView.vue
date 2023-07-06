@@ -1,11 +1,11 @@
 <template>
   <div
     :class="{ dark: switchCheckStatus }"
-    class="text-white bg-[#1a1c23] dark:bg-[#f1f1f1]"
+    class="text-white bg-[#1a1c23] dark:bg-[#f1f1f1] dark:text-[#1a1c23]"
   >
     <!-- 头部 -->
     <div class="">
-      <header class="w-[100%] m-auto h-[10vw]  px-[4vw] fixed top-0 left-0 z-[99] bg-[#1a1c23]">
+      <header class="w-[100%] m-auto h-[10vw]  px-[4vw] fixed top-0 left-0 z-[99] bg-[#1a1c23] dark:bg-[#f1f1f1]">
         <div class="flex justify-around items-center pt-[2vw]">
           <span @click="HomeView">
             <Icon
@@ -124,6 +124,7 @@
 <script>
 import axios from 'axios';
 import _ from 'lodash';
+import store from 'storejs'
 import {
   fetchSearchDefault,
   fetchSearchResult,
@@ -140,7 +141,8 @@ export default {
       guessyourlikeArr:[],  //数组
       pNodes: [],
       trackArr: [],
-      color: ''  //传入的颜色
+      color: '',  //传入的颜色
+      switchCheckStatus: null,
     };
   },
   methods: {
@@ -158,6 +160,7 @@ export default {
     },
   },
   async created() {
+    this.switchCheckStatus = store.get('switch')
     const res = await fetchSearchDefault();
     this.defaultSearch = res.data.data;
     GuessLike().then((res) => {

@@ -6,7 +6,7 @@ export default [
     //路径重定向
     {
       path:'/',
-      redirect:'HomeView'
+      redirect:'/HomeView'
     },
     {
       path:'/SearchView',
@@ -17,7 +17,11 @@ export default [
       component:HomeView
     },
     {
-      path:'/Song',
+      path:'/Login',
+      component:() => import('@/views/HomeView/Login.vue')
+    },
+    {
+      path:'/song',
       component:SongDetailsView
     }
 ]

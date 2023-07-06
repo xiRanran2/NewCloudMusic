@@ -13,7 +13,7 @@
       ref="scroll"
     >
       <ul class="scroll-content flex w-[252vw] m-[2vw] ml-[4vw]">
-        <li class="scroll-item rounded-[2vw] w-[60vw] h-[28vw]  bg-gradient-to-r from-[#c3a163] to-[#c5b89a]">
+        <li class="scroll-item rounded-[2vw] w-[60vw] h-[28vw]  bg-[#e9cb95]">
           <div>
             <div
               class="mt-[2vw] ml-[2vw] flex text-[white] dark:text-[#000000]"
