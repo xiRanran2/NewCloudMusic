@@ -86,7 +86,7 @@
         <div v-if="display">
           <p class="flex  pl-[4vw] pr-[4vw] mt-[12vw]" style="justify-content: space-between;">
               <span class="text-[2vw] text-[#aba59d]">喜欢这个歌单的用户也听了</span>
-              <span class="w-[5vw] h-[5vw] rounded-[50%] pr-[0.2vw] bg-[#c6e7c0] flex"  @click="lb1" style="align-items: center; justify-content:center" >
+              <span class="w-[5vw] h-[5vw] rounded-[50%] pr-[0.2vw] bg-[#787878] dark:bg-[#ba957e] flex"  @click="lb1" style="align-items: center; justify-content:center" >
                   <Icon icon="ep:arrow-up"  class="text-[#fff] text-[3.5vw]"  />
               </span>
           </p>

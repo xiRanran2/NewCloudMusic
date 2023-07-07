@@ -14,12 +14,12 @@
               <p
                 class="flex items-center text-white dark:text-[#000] m-[1vw] p-[1vw]"
               >
-                <img
+                <!-- <img
                   class="w-[6vw] h-[6vw] rounded-[50%]"
-                  src="https://fastly.picsum.photos/id/211/1920/1280.jpg?hmac=5feWJpfa59_r1yi4NCuTxY9IWrNWZqEUDIAwrtKId9s"
+                  :src="myInfo.avatarUrl"
                   alt=""
-                />
-                <span class="ml-[2vw]">ranran</span>
+                /> -->
+                <!-- <span class="ml-[2vw]">{{myInfo.nickname}}</span> -->
                 <Icon
                   icon="simple-line-icons:arrow-up"
                   class="text-[#fff] text-[3vw] dark:text-[#000]"
@@ -46,7 +46,19 @@
   </div>
 </template>
 <script>
+// import {getUserAccount} from '@/request'
 export default {
+  // async created(){
+  //   getUserAccount().then((res) => {
+  //     this.myInfo = res.data.profile;
+  //     console.log(this.myInfo)   //用户信息
+  //   });
+  // },
+  data(){
+    return {
+      // myInfo:[],
+    }
+  },
   // 单向数据流（父级通过props传递给子组件的数据 子组件没有权利修改）
   props: {
     visible: {

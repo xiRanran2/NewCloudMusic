@@ -1,10 +1,13 @@
 <template>
-  <div :class="{ dark: switchCheckStatus }" >
-    <div class=" bg-[#1a1c23] dark:bg-[#f1f1f1] dark:text-[#000]">
+  <div :class="{ dark: switchCheckStatus }">
+    <div class="bg-[#1a1c23] dark:bg-[#f1f1f1] dark:text-[#000]">
       <header class="w-[90vw] m-auto h-[10vw] relative p-[1vw]">
         <div class="flex justify-around items-center pt-[2vw]">
           <span @click="drawerList = !drawerList">
-            <Icon icon="pepicons-pop:menu" class="text-[6vw] text-white dark:text-[#000]" />
+            <Icon
+              icon="pepicons-pop:menu"
+              class="text-[6vw] text-white dark:text-[#000]"
+            />
           </span>
           <div class="relative">
             <input
@@ -21,7 +24,10 @@
               @click.native="searchHandler(userSearchKeywords)"
             />
           </div>
-          <Icon icon="ph:microphone-bold" class="text-[6vw] text-white dark:text-[#000]" />
+          <Icon
+            icon="ph:microphone-bold"
+            class="text-[6vw] text-white dark:text-[#000]"
+          />
           <ul
             v-if="searchSuggestList.length"
             class="absolute z-50 mb-[0.5vw] top-[8vw] left-[16vw] text-[2vw]"
@@ -41,8 +47,43 @@
 
       <!-- 从左往右的插槽 -->
       <Drawer :visible.sync="drawerList" direction="ltr">
+        <template #header>
+          <div
+            class="fixed w-[75%] bg-[#1a1c23] flex justify-between items-center dark:bg-[#fff] z-[99]"
+          >
+            <p
+              class="flex items-center text-white dark:text-[#000] m-[1vw] p-[1vw]"
+            >
+              <img
+                v-if="myInfo"
+                class="w-[6vw] h-[6vw] rounded-[50%]"
+                :src="myInfo.avatarUrl"
+                alt=""
+              />
+              <img
+                v-else
+                class="w-[6vw] h-[6vw] rounded-[50%]"
+                src="https://img2.baidu.com/it/u=4186845889,1048347178&fm=253&fmt=auto&app=138&f=JPEG?w=275&h=275"
+                alt=""
+              />
+              <span v-if="myInfo" class="ml-[2vw]">{{ myInfo.nickname }}</span>
+              <span v-else class="ml-[2vw]" @click="$router.push('/Login')"
+                >立即登录</span
+              >
+              <Icon
+                icon="simple-line-icons:arrow-up"
+                class="text-[#fff] text-[3vw] dark:text-[#000]"
+                :rotate="1"
+              />
+            </p>
+            <Icon
+              icon="mdi:line-scan"
+              class="text-[#fff] mr-[4vw] text-[5vw] dark:text-[#000]"
+            />
+          </div>
+        </template>
         <div class="mt-[12vw] h-[100vh] scroll-wrapper" ref="scroll">
-          <div class=" scroll-content h-[340vw]">
+          <div class="scroll-content h-[340vw]">
             <!-- 黑胶会员 -->
             <div
               class="w-[72vw] h-[26vw] ml-[2vw] pt-[2vw] px-[3vw] pb-[3.5vw] mt-[2vw] mb-[3vw] flex flex-col justify-between text-[3vw] bg-gradient-to-r from-[#3e3c3a] to-[#8d7168] rounded-2xl dark:bg-[#fff]"
@@ -511,8 +552,11 @@
               </div>
             </div>
             <!-- 退出登录 -->
-            <div  @click="fn" class="w-[71vw] h-[13vw] leading-[13vw] ml-[2.5vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw]  dark:bg-[#fff]">
-               <div class="w-[71vw] text-[red] text-center ">退出登录</div>
+            <div
+              @click="openConfirmDialog"
+              class="w-[71vw] h-[13vw] leading-[13vw] ml-[2.5vw] w dark:text-[#060505] bg-[#272930] rounded-[2vw] dark:bg-[#fff]"
+            >
+              <div class="w-[71vw] text-[red] text-center">退出登录</div>
             </div>
           </div>
         </div>
@@ -553,11 +597,12 @@
   </div>
 </template>
 <script>
-import Dialog from '../../components/Dialog';
+// import Dialog from '../../components/Dialog';
+import { Dialog } from 'vant';
 import axios from 'axios';
 import _ from 'lodash';
-import BScroll from '@better-scroll/core'
-import store from 'storejs'
+import BScroll from '@better-scroll/core';
+import store from 'storejs';
 import {
   fetchSearchDefault,
   fetchSearchResult,
@@ -584,11 +629,12 @@ export default {
       hottopic: [],
       userSearchKeywords: '',
       defaultSearch: {},
-      searchSuggestList: [], 
+      searchSuggestList: [],
       drawerList: false,
       show: false,
       resourceData: '',
       switchCheckStatus: null,
+      myInfo: [],
     };
   },
   components: {
@@ -602,31 +648,20 @@ export default {
     musiccalender: () => import('./compoents/musiccalender.vue'),
   },
   mounted() {
-    this.init(this.$refs.scroll)
+    this.init(this.$refs.scroll);
   },
   beforeDestroy() {
-    this.bs.destroy()
+    this.bs.destroy();
   },
   updated() {
     this.bs.refresh();
   },
   methods: {
-    fn() {
-      Dialog({ title: '网易云音乐', message: '确定退出当前账号吗？' })
-        .then(function () {
-          // console.log('点击了确定');
-          // this.$router.push('/Login');
-        })
-        .catch(function () {
-          // console.log('点击了取消');
-        });
-    },
     openConfirmDialog() {
       Dialog.confirm({
         message: '确定退出当前账号吗?',
       })
         .then(() => {
-          // on confirm
           console.log('Confirmed');
           // 获取 __m__cookie 值
           const mCookie = localStorage.getItem('__m__cookie');
@@ -636,20 +671,19 @@ export default {
           this.$router.push('/Login');
         })
         .catch(() => {
-          // on cancel
           console.log('Cancelled');
         });
     },
     init(name) {
       this.bs = new BScroll(name, {
-          scrollX: true,
-          probeType: 3,
-          click: true,
-          disableMouse: false, //启用鼠标拖动
-      })
+        scrollX: true,
+        probeType: 3,
+        click: true,
+        disableMouse: false, //启用鼠标拖动
+      });
     },
-    SearchView(){
-      this.$router.push('/SearchView')
+    SearchView() {
+      this.$router.push('/SearchView');
     },
     async searchHandler(keywords) {
       const res = await fetchSearchResult({
@@ -674,19 +708,19 @@ export default {
       this.bannerPic = res.data.data.blocks[1].creatives[0].resources; //小轮播数据
       // this.hottopic = res.data.data.blocks[4].creatives; //热门话题
       // console.log(this.personalized)
-      
     });
     //日历
     Calendar().then((res) => {
       this.calendar = res.data.data.calendarEvents;
     });
-    // const res1 = await getUserAccount();
-    // console.log(res1);   //用户信息
-    // const detail = await getUserDetail()
-    // console.log(detail)   //用户详情
+    getUserAccount().then((res) => {
+      this.myInfo = res.data.profile;
+      console.log(this.myInfo); //用户信息
+    });
+    const detail = await getUserDetail();
+    console.log(detail); //用户详情
 
-    this.switchCheckStatus = store.get('switch')
-
+    this.switchCheckStatus = store.get('switch');
   },
   watch: {
     userSearchKeywords: _.debounce(async function (keywords) {
@@ -697,32 +731,31 @@ export default {
 };
 </script>
 <style>
-  img {
-    max-width: none;
-  }
-  .red-image {
-    filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='colorize'><feColorMatrix type='matrix' values='1 0 0 0 0.698 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter></svg>#colorize");
-  }
-  .menu::-webkit-scrollbar {
-    height: 0px;
-    width: 20px;
-  }
-  .van-swipe__indicators > .van-swipe__indicator {
-    width: 0;
-    height: 0;
-  }
-  .other {
-    height: 95vw;
-  }
-  .others {
-    height: 80vw;
-  }
-  .w {
-    color: #fff;
-  }
+img {
+  max-width: none;
+}
+.red-image {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='colorize'><feColorMatrix type='matrix' values='1 0 0 0 0.698 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter></svg>#colorize");
+}
+.menu::-webkit-scrollbar {
+  height: 0px;
+  width: 20px;
+}
+.van-swipe__indicators > .van-swipe__indicator {
+  width: 0;
+  height: 0;
+}
+.other {
+  height: 95vw;
+}
+.others {
+  height: 80vw;
+}
+.w {
+  color: #fff;
+}
 
-  .c {
-    color: #918888;
-  }
-
+.c {
+  color: #918888;
+}
 </style>
