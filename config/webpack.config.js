@@ -14,6 +14,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.jsx$/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
@@ -56,6 +62,7 @@ module.exports = {
       vue: 'vue/dist/vue.esm.js',
       '@': path.resolve(__dirname, '../src'),
     },
+    extensions : ['.js','.json','.jsx']
   },
   externals: {
     vue: 'Vue',

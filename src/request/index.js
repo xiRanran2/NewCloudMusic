@@ -90,3 +90,8 @@ export const getUserAccount = () => http.get('/user/account');
 export const getUserDetail = (uid) => http.get('/user/detail',{params:{uid}});
 
 export const musicSlider = (params) => http.get(`related/playlist?id=${params}`)
+
+export const fetchPlaylist = (uid) => http.get('/user/playlist',{params:{uid}})
+
+export const fetchUserComment = (uid) => http.get('/user/comment/history',{params:{uid}})
+

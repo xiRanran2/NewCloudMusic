@@ -55,9 +55,9 @@
               class="flex items-center text-white dark:text-[#000] m-[1vw] p-[1vw]"
             >
               <img
-                v-if="myInfo"
+                v-if="myinfo"
                 class="w-[6vw] h-[6vw] rounded-[50%]"
-                :src="myInfo.avatarUrl"
+                :src="myinfo.avatarUrl"
                 alt=""
               />
               <img
@@ -66,7 +66,12 @@
                 src="https://img2.baidu.com/it/u=4186845889,1048347178&fm=253&fmt=auto&app=138&f=JPEG?w=275&h=275"
                 alt=""
               />
-              <span v-if="myInfo" class="ml-[2vw]">{{ myInfo.nickname }}</span>
+              <span
+                v-if="myinfo"
+                class="ml-[2vw]"
+                @click="$router.push('/UserInfo')"
+                >{{ myinfo.nickname }}</span
+              >
               <span v-else class="ml-[2vw]" @click="$router.push('/Login')"
                 >立即登录</span
               >
@@ -613,6 +618,7 @@ import {
   Calendar,
   getUserAccount,
   getUserDetail,
+  fetchUserComment,
 } from '@/request';
 export default {
   data() {
@@ -634,7 +640,7 @@ export default {
       show: false,
       resourceData: '',
       switchCheckStatus: null,
-      myInfo: [],
+      myinfo: [],
     };
   },
   components: {
@@ -713,13 +719,18 @@ export default {
     Calendar().then((res) => {
       this.calendar = res.data.data.calendarEvents;
     });
-    getUserAccount().then((res) => {
-      this.myInfo = res.data.profile;
-      console.log(this.myInfo); //用户信息
-    });
-    const detail = await getUserDetail();
-    console.log(detail); //用户详情
-
+    const myInfo = await getUserAccount();
+    // .then((res) => {
+      this.myinfo = myInfo.data.profile;
+    // console.log(this.myinfo); //用户信息
+    // });
+    const detail = await getUserDetail(myInfo.data.profile.userId);
+    // console.log(detail); //用户详情
+    const comments = await fetchUserComment(myInfo.data.profile.userId)
+    // const mCookie = localStorage.getItem('__m__cookie');
+    store.set('msg', detail);
+    store.set('comment',comments)
+      
     this.switchCheckStatus = store.get('switch');
   },
   watch: {

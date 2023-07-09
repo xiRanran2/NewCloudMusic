@@ -6,7 +6,7 @@ export default [
     //路径重定向
     {
       path:'/',
-      redirect:'/Login'
+      redirect:'/miFile'
     },
     {
       path:'/SearchView',
@@ -23,5 +23,13 @@ export default [
     {
       path:'/song',
       component:SongDetailsView
-    }
+    },
+    {
+      path:'/UserInfo',
+      component:() => import('@/views/HomeView/UserInfo')
+    },
+    {
+      path:'/miFile',
+      component:() => import('@/views/HomeView/miFile')
+    },
 ]

@@ -9,14 +9,19 @@
           class="text-[8vw]"
         />
       </span>
-      <van-notice-bar :text="songlist.name" class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951]" />
+      <transition v-if="over">
+        <span class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951] text-[5vw]">歌单</span>
+      </transition>
+      <transition v-else>
+        <van-notice-bar :text="songlist.name" class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951]" />
+      </transition>
       <div class="flex">
         <Icon icon="carbon:search" class="mr-[4vw]" />
         <Icon icon="uil:ellipsis-v"  />
       </div>
     </header>
     <div class="mt-[15vw] dark:bg-[#966951] dark:text-[#fff]">
-      <div>
+      <div ref="wrapper">
         <!--点击前的 歌曲类型 -->
         <div v-if="terent">
           <div class="flex ml-[5vw]">
@@ -234,7 +239,7 @@ export default {
       music:[],
       terent:true,
       display:false,
-
+      over:true,
     };
   },
   created() {
@@ -274,7 +279,10 @@ export default {
         this.terent = !this.terent
         this.display = !this.display
     },
-
+    handleScroll(){
+      const scrollTop = window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop
+      this.over = scrollTop > this.$refs.wrapper.offsetHeight / 2 ? false : true
+    }
   },
 };
 </script>

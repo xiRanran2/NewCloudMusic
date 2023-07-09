@@ -40,7 +40,6 @@
           closeable
           position="bottom"
           :style="{ height: '25%', backgroundColor: '#7d7373' }"
-          
           round
         >
           <p class="text-[#e5e7eb] text-[1vw] p-[4vw]">新歌新碟\数字专辑</p>
