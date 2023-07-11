@@ -9,34 +9,29 @@
           class="text-[8vw]"
         />
       </span>
-      <transition v-if="over">
+      <div v-if="over">
         <span class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951] text-[5vw]">歌单</span>
-      </transition>
-      <transition v-else>
-        <van-notice-bar :text="songlist.name" class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951]" />
-      </transition>
+      </div>
+      <div v-else class="flex items-center w-[67vw]">
+        <van-notice-bar scrollable :text="songlist.name" class="text-[#fff] w-[58vw] bg-[#444]  dark:bg-[#966951]" />
+        <div class="w-[16.6vw] h-[7.67vw] rounded-[5vw] flex justify-center items-center ml-[2.48vw] text-[3.16vw]"  style="background: rgba(255,255,255, 0.2)">
+          <Icon class="w-[3.08vw] h-[3.19vw] mr-[1.35vw]" icon="material-symbols:add-box" />
+          <span>收藏</span>
+        </div>
+      </div>
+      
       <div class="flex">
         <Icon icon="carbon:search" class="mr-[4vw]" />
         <Icon icon="uil:ellipsis-v"  />
       </div>
     </header>
     <div class="mt-[15vw] dark:bg-[#966951] dark:text-[#fff]">
-      <div ref="wrapper">
+      <div ref="wrapper" class="relative">
         <!--点击前的 歌曲类型 -->
-        <div v-if="terent">
-          <div class="flex ml-[5vw]">
+        <div v-if="terent" class="transition-all fade-in">
+          <div class="flex ml-[5vw] h-[30vw]">
             <!-- 照片 -->
             <div class="relative w-[28vw] h-[28vw]">
-              <div
-                  class="text-white dark:text-black flex items-center absolute top-[1vw] right-[1vw] z-[2]"
-              >
-                  <Icon icon="ion:play" color="white" class="text-[3vw]" />
-                  <span>{{
-                  songlist.playCount > 10000
-                      ? Math.floor(songlist.playCount / 10000) + '万'
-                      : songlist.playCount
-                  }}</span>
-              </div>
               <div class="relative">
                   <div
                   class="w-[24vw] h-[4vw] bg-[#5c5c5c] dark:bg-[#a2755d] rounded-[4vw] absolute top-0 left-[2vw]"
@@ -46,25 +41,26 @@
                   class="w-[28vw] rounded-[4vw] absolute top-[1vw] left-[0vw] z-[2]"
                   />
               </div>
+              <div
+                  class="text-white flex items-center absolute top-[1vw] right-[1vw] z-[2]"
+              >
+                  <Icon icon="ion:play" color="white" class="text-[3vw]" />
+                  <span>{{wan(songlist.playCount)}}</span>
+              </div>
             </div>
             <!-- 用户信息 -->
             <div class="flex flex-col m-[3vw] ">
               <!-- 标题 -->
               <div class="flex w-[57vw] justify-between">
                   <p class="font-extrabold">{{ songlist.name }}</p>
-                  <span @click="lb"
-                  class="w-[5vw] h-[4vw] bg-[#626262] dark:bg-[#e7cebf]  rounded-[50%] flex items-center mt-[1vw] "
-                  >
-                    <Icon icon="ep:arrow-up" :rotate="2" />
-                  </span>
               </div>
               <!-- 用户头像 网名 -->
               <div class="flex items-center mt-[2vw] ">
                   <img
-                  :src="songlist.creator.backgroundUrl"
+                  :src="songlist.creator?.backgroundUrl"
                   class="rounded-[50%] w-[9vw]"
                   />
-                  <p class="ml-[1.5vw] text-[2.5vw]">{{ songlist.creator.nickname }}</p>
+                  <p class="ml-[1.5vw] text-[2.5vw]">{{ songlist.creator?.nickname }}</p>
                   
                   <div class="w-[14vw] ml-[3vw] h-[6vw] rounded-[5vw] bg-[#787878] dark:bg-[#ba957e] relative">
                     <div class="flex w-[14vw] h-[6vw] justify-center absolute top-0 left-0 items-center">
@@ -88,22 +84,24 @@
           </div>
         </div>
         <!-- 点击后的 -->
-        <div v-if="display">
-          <p class="flex  pl-[4vw] pr-[4vw] mt-[12vw]" style="justify-content: space-between;">
-              <span class="text-[2vw] text-[#aba59d]">喜欢这个歌单的用户也听了</span>
-              <span class="w-[5vw] h-[5vw] rounded-[50%] pr-[0.2vw] bg-[#787878] dark:bg-[#ba957e] flex"  @click="lb1" style="align-items: center; justify-content:center" >
-                  <Icon icon="ep:arrow-up"  class="text-[#fff] text-[3.5vw]"  />
-              </span>
+        <div v-if="display" class="transition-all fade-in h-[46vw]">
+          <p class="flex  pl-[4vw] pr-[4vw]" style="justify-content: space-between;">
+            <span class="text-[2vw] text-[#c3c3c3] text-opacity-70">喜欢这个歌单的用户也听了</span>
           </p>
-          <div class="overflow-auto lunbo pl-[2vw] pr-[2vw] mt-[3vw]">
+          <div class="overflow-auto menu  pl-[2vw] pr-[2vw] mt-[3vw]">
               <div class=" flex " :style="`width:${music?.length * 25 + 25}vw`"  style="justify-content: space-around;">
                   <div v-for="(item) in music" :key="item.tom" class="w-[28vw]">
-                      <img :src="item.coverImgUrl" alt="" class="w-[28vw] h-[28vw] rounded-[4vw]">
-                      <p class=" line-clamp-2 text-[#fff] text-[2vw] mt-[2vw]">{{ item.name }}</p>
+                      <img :src="item.coverImgUrl" alt="" class="w-[28vw] h-[28vw] rounded-[3vw]">
+                      <p class=" line-clamp-2 text-[#fff] text-[3vw] mt-[2vw]">{{ item.name }}</p>
                   </div>
               </div>
           </div>
+   
         </div>
+
+        <span class="absolute top-[10px] right-[7px] w-[5vw] h-[5vw] rounded-[50%] pr-[0.2vw] bg-[#787878] dark:bg-[#ba957e] flex  transform rotate-180"  @click="lb1" style="align-items: center; justify-content:center" >
+          <Icon icon="ep:arrow-up"  class="text-[#fff] text-[3.5vw]"  />
+        </span>
 
 
         <!-- 评论描述 -->
@@ -163,13 +161,14 @@
           <div class="sticky top-[14.5vw] ">
             <!-- 头部 -->
             <div
-            class="absolute w-[100%] rounded-t-[4vw] items-center h-[14vw] leading-[14vw] bg-[#636363] dark:bg-[rgb(291,278,452)] pl-[4vw] pr-[5vw] flex m-auto justify-between"
+            class="absolute w-[96%] rounded-t-[4vw] items-center h-[14vw] leading-[14vw] bg-[#636363] dark:bg-[rgb(291,278,452)] pl-[4vw] pr-[5vw] flex m-auto justify-between"
             >
             <div class="flex items-center sticky z-[3] dark:text-[black]">
-                <span
+                <span 
                 class="inline-block w-[6vw] h-[6vw] bg-[red] rounded-[50%] relative"
                 >
                 <Icon
+                    @click.native="playAll"
                     icon="ri:play-fill"
                     color="white"
                     class="absolute top-[1vw] left-[1vw]"
@@ -181,8 +180,8 @@
                 >
             </div>
             <div class="text-[6vw] flex">
-                <Icon icon="formkit:downloadcloud" color="white" class="mr-[4vw]" />
-                <Icon icon="solar:list-down-outline" color="white" />
+                <Icon icon="formkit:downloadcloud"  class="mr-[4vw] text-[#fff] dark:text-[black]" />
+                <Icon icon="solar:list-down-outline"  class=" text-[#fff] dark:text-[black]"  />
             </div>
             </div>
           </div>
@@ -192,6 +191,7 @@
               v-for="(item, indexs) in songlistAll"
               :key="item.key"
               class="flex w-[90%] h-[15vw] items-center justify-between  truncate"
+              @click="playAll(item)"
           >
               <div class="flex items-center">
                   <span class="text-[#9a9a9a]">{{ indexs + 1 }}</span>
@@ -212,22 +212,23 @@
                   </div>
               </div>
               <div class="flex text-[#aeaeae]">
-              <Icon icon="bi:play-btn" class="mr-[5vw]" />
-              <Icon icon="uil:ellipsis-v" class=" " />
+                <Icon icon="bi:play-btn" class="mr-[5vw]" @click.native="play"/>
+                <Icon icon="uil:ellipsis-v" class=" " />
               </div>
           </li>
           </ul>
       </div>
     </div>
+
+    
   </div>
 </template>
 
 <script>
 import { Sticky } from 'vant';
 import store from 'storejs';
-import {Songdeta,SongDataList,musicSlider} from '../../request/index.js'
 Vue.use(Sticky);
-import { songDetails, playlistTracks } from '../../request/index.js';
+import { songDetails, playlistTracks,musicSlider } from '../../request/index.js';
 export default {
   data() {
     return {
@@ -254,13 +255,14 @@ export default {
     });
     playlistTracks(this.$route.query.id).then((res) => {
       this.songlistAll = res.data.songs;
+      store.set('songs',this.songlistAll)
       // let cl = res.data.songs;
-      // console.log(cl);
+      // console.log( this.songlistAll);  //所有的歌单
     });
     musicSlider(this.$route.query.id).then((res) => {
-      console.log(res)
+      // console.log(res)
       this.music = res.data.playlists
-      console.log(this.music);
+      // console.log(this.music);
     })
 
   },
@@ -268,7 +270,18 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
   },
   methods: {
-    HomeView() {
+    play(){
+      window.$player.playOrPause();
+    },
+    wan(num) {
+        if(num > 100000000){
+            return (num / 100000000).toFixed(1) + '亿'
+        }
+        else if (num > 10000) {
+            return (num / 10000).toFixed(1) + '万'
+        }
+    },
+   HomeView() {
       this.$router.push('/HomeView');
     },
     lb(){
@@ -282,8 +295,21 @@ export default {
     handleScroll(){
       const scrollTop = window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop
       this.over = scrollTop > this.$refs.wrapper.offsetHeight / 2 ? false : true
-    }
+    },
+    playAll(item){
+      window.$player.replacePlaylist(
+        this.songlistAll.map((song) => song.id),'',
+        '',
+        item.id
+        
+      )
+    },
   },
+  computed:{
+    spinStyle() {
+        return this.isPlaying ? { animation: 'spin 2s linear infinite' } : {};
+    }
+  }
 };
 </script>
 
@@ -292,7 +318,8 @@ export default {
   height: 0rem;
   width: 1.25rem;
 }
-header>.van-notice-bar{
+header .van-notice-bar{
+  width: 40vw;
   background-color: #444;
 }
 .van-notice-bar__wrap .van-notice-bar__content{
@@ -301,5 +328,13 @@ header>.van-notice-bar{
 .lunbo::-webkit-scrollbar {
   height: 0px;
   width: 20px;
+}
+#trans{
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>

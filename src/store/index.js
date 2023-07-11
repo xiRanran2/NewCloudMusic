@@ -1,18 +1,15 @@
+import _state from "./state";
 import Vue from 'vue'
-import Vuex from '@/vuex'
-Vue.use(Vuex)
+import store from "storejs";
+const state = Vue.observable(_state);
 
-const store = new Vuex.Store({
-    state:{
-        switchCheckStatus:null,
-    //   darkMode:false,
-    //   count:123,
-    //   msg:'hello,vuex!'
-    },
-    mutataions:{
-        // increase(state){
-        //     state.count++;
-        // }
+const mutations = {
+    increase(){
+        state.darkMode = !state.darkMode
+        store.set('darkMode',state.darkMode)
     }
-})
-export default store
+}
+export default {
+    state,
+    mutations
+};

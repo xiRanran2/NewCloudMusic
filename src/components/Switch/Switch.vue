@@ -23,6 +23,11 @@ export default {
         prop:'value1',
         event:'input1'
     },
+    computed:{
+        darkMode(){
+            return store.state.darkMode
+        }
+    },
     props: {
         value1: {
             type: Boolean,
@@ -34,6 +39,7 @@ export default {
             this.$emit('input1',!this.value1)
             store.set('switch',!this.value1)
         }
-    }
+    },
+    
 };
 </script>

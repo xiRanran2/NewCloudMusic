@@ -36,13 +36,7 @@
         >
           <div class="text-white flex items-center absolute top-[1vw] right-0">
             <Icon icon="ion:play" color="white" class="text-[3vw]" />
-            <span>{{
-              item.resources[0].resourceExtInfo.playCount > 10000
-                ? Math.floor(
-                    item.resources[0].resourceExtInfo.playCount / 10000
-                  ) + '万'
-                : item.resources[0].resourceExtInfo.playCount
-            }}</span>
+            <span>{{wan(item.resources[0]?.resourceExtInfo?.playCount)}}</span>
           </div>
           <Icon
             icon="ion:play"
@@ -52,9 +46,9 @@
           <img
             :src="item.uiElement.image.imageUrl"
             class="w-[29vw] h-[30vw] rounded-[3vw]"
-            @click="songDetails(item.resources[0].resourceId)"
+            @click="songDetails(item.resources[0]?.resourceId)"
           />
-          <p class="text-[#fff] dark:text-[#130c0c] truncate">{{ item.uiElement.mainTitle.title }}</p>
+          <p class="text-[#fff] dark:text-[#130c0c] truncate">{{ item.uiElement?.mainTitle.title }}</p>
         </li>
       </ul>
     </div>
@@ -98,7 +92,6 @@
         // resourceData: '',
         bannerPic: [],
         personalized:[],
-        show: false,
       };
     },
     name: 'RecommendedSongs',
@@ -107,6 +100,14 @@
       this.animateItems()
     },
     methods:{
+      wan(num) {
+        if(num > 100000000){
+            return (num / 100000000).toFixed(1) + '亿'
+        }
+        else if (num > 10000) {
+            return (num / 10000).toFixed(1) + '万'
+        }
+    },
       animateItems() {
         setInterval(() => {
           this.visible++;

@@ -95,3 +95,12 @@ export const fetchPlaylist = (uid) => http.get('/user/playlist',{params:{uid}})
 
 export const fetchUserComment = (uid) => http.get('/user/comment/history',{params:{uid}})
 
+
+export const getMP3 = (id) => http.get('/song/url/v1',{params: { id,level:'standard' } })
+
+export const getTrackDetail = (id) => http.get('/song/detail', { params: { ids: id } });
+
+//编辑信息的链接
+export const setUser = (gender,birthday,nickname,province,city,signature) => http.get('/user/update',{params:{gender,birthday,nickname,province,city,signature}})
+//重复昵称检测
+export const getNickname = (nickname) => http.get('/nickname/check',{params:{nickname}})
