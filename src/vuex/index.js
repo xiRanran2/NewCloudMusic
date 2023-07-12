@@ -59,4 +59,10 @@ export default {
             },
         });
     },
+    mutations: {
+        updateDetails(state, newDetails) {
+            state.details = newDetails;
+            localStorage.setItem('details', JSON.stringify(newDetails));
+        }
+    }
 };

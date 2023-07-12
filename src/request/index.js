@@ -100,7 +100,9 @@ export const getMP3 = (id) => http.get('/song/url/v1',{params: { id,level:'stand
 
 export const getTrackDetail = (id) => http.get('/song/detail', { params: { ids: id } });
 
-//编辑信息的链接
-export const setUser = (gender,birthday,nickname,province,city,signature) => http.get('/user/update',{params:{gender,birthday,nickname,province,city,signature}})
+
+export const updateInfo = (gender,birthday,nickname,province,city,signature) => http.get('/user/update',{params:{gender,birthday,nickname,province,city,signature}})
 //重复昵称检测
 export const getNickname = (nickname) => http.get('/nickname/check',{params:{nickname}})
+//编辑信息的链接
+// export const updateInfo = (info) => http.get('/user/update',{params:{...info}})

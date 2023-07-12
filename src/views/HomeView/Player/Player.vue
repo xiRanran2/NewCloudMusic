@@ -32,26 +32,6 @@
           <van-circle v-model="currentRate" :rate="(player._progress * 100) / player._duration"  size="5.6vw" :stroke-width="120" color="#475165" layer-color="#C7CBD2"/> 
           <Icon :icon="!play ? 'carbon:pause-filled' : 'ph:play-fill'" width="11px" class="top-1/2 left-1/2 translate-x-[-50%]  translate-y-[-50%] absolute" />
         </div>
-        <!-- <div
-          class="w-[5.6vw] h-[5.6vw] relative ml-[2.2vw]"
-          @click="togglePlay()"
-        >
-          <van-circle
-            v-model="currentRate"
-            :rate="30"
-            :speed="100"
-            size="5.6vw"
-            :stroke-width="120"
-            color="#475165"
-            layer-color="#C7CBD2"
-            class="dark:text-[#e3e6e8]"
-          />
-          <Icon
-            :icon="`${!play ? 'carbon:pause-filled' : 'ph:play-fill'}`"
-            width="11px"
-            class="top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] absolute dark:text-[#e3e6e8]"
-          />
-        </div> -->
         <span @click="show = !show">
             <Icon
                 icon="iconamoon:playlist-fill"
@@ -110,14 +90,16 @@
           </div>
         </div>
 
-        <ul class="flex flex-col">
+        <ul class="flex flex-col mt-[20vw]">
           <li
             v-for="item in menusongList"
             :key="item.key"
+            @click="playAll(item)"
             class="flex h-[10vw] leading-[10vw] items-center justify-between"
           >
             <div class="flex w-[60vw] truncate">
-              <p class="mr-[2vw]">{{ item.name }}</p>
+              <img v-if="item.key ===  player._currentTrack.id" src="../../../static/wave.gif">
+              <p :class="item.key ===  player._currentTrack.id ? 'text-[red]' : ''"  class="mr-[2vw]">{{ item.name }}</p>
               <div class="text-[#797979] dark:text-[#898989 ]">
                 <span
                   class="text-[#c1c1c1] text-[1vw]"
@@ -152,12 +134,21 @@ export default {
       // play: false,
       show: false,
       menusongList: [],
+      cookieMusic:[],
+      cookie:[]
     };
   },
   methods: {
     togglePlay() {
       this.play = !this.play;
       window.$player.playOrPause();
+    },
+    playAll(item){
+      window.$player.replacePlaylist(
+        this.songlistAll.map((song) => song.id),'',
+        '',
+        item.id
+      )
     },
   },
   async created() {

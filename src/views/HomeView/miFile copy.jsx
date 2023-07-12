@@ -2,8 +2,12 @@ import { areaList } from '@vant/area-data';
 import store from 'storejs';
 import styled from 'styled-components-vue';
 import Vue from 'vue';
-import { updateInfo,getNickname } from '@/request';
 import { DatetimePicker, Picker } from 'vant';
+import { mapState, mapMutations } from '@/vuex';
+import _ from 'lodash';
+
+import { updateInfo, getNickname, getUserAccount } from '@/request';
+// import { parse } from '@babel/core';
 Vue.use(DatetimePicker).use(Picker);
 // import dayjs from 'dayjs'
 // import RelativeTime from 'dayjs/plugin/relativeTime'
@@ -101,18 +105,15 @@ export default {
               <ul class="mt-[13vw] list  bg-[#191b22] dark:bg-[#f0f3f5]">
                 <li class="t  border-b-[#303239] border-b-[0.09vw] dark:border-b-[#d9dcde]">
                   <p>头像</p>
-                  <router-link to="/UserInfo" class="flex items-center">
+                  <div class="flex items-center">
                     <img
                       src={this.details?.avatarUrl}
                       class="w-[13.06vw] rounded-[50%] mr-[2.84vw]"
                     />
                     <Icon icon="ep:arrow-up" rotate={1} />
-                  </router-link>
+                  </div>
                 </li>
-                <li
-                  onClick={this.nickShow}
-                  class=" border-b-[#303239] border-b-[0.09vw] dark:border-b-[#d9dcde]"
-                >
+                <li onClick={this.nickShow} class=" border-b-[#303239] border-b-[0.09vw] dark:border-b-[#d9dcde]">
                   <p>昵称</p>
                   <div class="flex items-center">
                     <span>{this.details?.nickname}</span>
@@ -125,7 +126,7 @@ export default {
                 >
                   <p>性别</p>
                   <div class="flex items-center">
-                    <span ref="sex">{this.isGender(this.userArr[0])}</span>
+                    <span>{this.gender == 1 ? '男' : this.gender == 0 ? '保密' : '女'}</span>
                     <Icon icon="ep:arrow-up" rotate={1} />
                   </div>
                 </li>
@@ -148,7 +149,9 @@ export default {
                   <div class="flex items-center">
                     {/* <span>输入生日信息</span> */}
                     <span>
-                      {this.DatePicker(this.userArr[1])}
+                      {new Date(this.details.birthday).getFullYear()}-
+                      {new Date(this.details.birthday).getMonth() + 1}-
+                      {new Date(this.details.birthday).getDate()}
                     </span>
                     <Icon icon="ep:arrow-up" rotate={1} />
                   </div>
@@ -160,7 +163,7 @@ export default {
                   <p>地区</p>
                   <div class="flex items-center">
                     {/* <span v-if="this.city === ''" class="hid">{areaList.province_list[this.details.province].slice(0,2)} {areaList.city_list[this.details.city].slice(0,2)}</span> */}
-                    <span class="city">{areaList.province_list[this.userArr[3]].slice(0,2)} {areaList.city_list[this.userArr[4]].slice(0,2)}</span>
+                    <span class="city">{this.city}</span>
                     <Icon icon="ep:arrow-up" rotate={1} />
                   </div>
                 </li>
@@ -223,30 +226,27 @@ export default {
                   <span onClick={this.setnickname}>完成</span>
                 </div>
                 <div class="w-[100%] px-[3vw]  bg-[#0d0d10] dark:bg-[#fff] h-[10vw] mt-[2vw]">
-                  <input
-                    v-model={this.nickname}
-                    class="box-border pl-[4vw] h-[100%] caret-blue-600 bg-white w-[100%]"
-                    type="text"
-                    value={this?.details?.nickname}
-                    placeholder="请输入昵称"
-                  />
+                <input
+                  v-model={this.nickname}
+                  class="box-border pl-[4vw] h-[100%] caret-blue-600 bg-white w-[100%]"
+                  type="text"
+                  value={this?.details?.nickname}
+                  placeholder="请输入昵称"
+                />
                 </div>
               </div>
             </van-popup>
-
             {/* 性别 */}
             <van-popup
               v-model={this.sexualVisible}
               position="bottom"
-              style={{ height: '30%' }}
+              class="flex h-[30vh] flex-col"
             >
               <van-picker
-                ref="genderPicker"
                 show-toolbar
                 confirm-button-text="完成"
                 columns={this.columns}
-                // onChange={this.getSex}
-                onConfirm={this.changeSex}
+                onConfirm={this.sexualConfirm}
               />
             </van-popup>
             {/* 出生年月日 */}
@@ -286,6 +286,9 @@ export default {
       areaList: '',
       city: '',
       time: '',
+      address: '',
+      birthDay: '',
+      nickshow:false,
       dataVisible: false,
       sexualVisible: false,
       minDate: new Date(1950, 0, 1),
@@ -294,69 +297,71 @@ export default {
       switchCheckStatus: null,
       sexual: '',
       sex: null,
-      userArr: [],
-      genders: '',
-      birthdays: '',
-      nicknames: '',
-      provinces: '',
-      citys: '',
-      signatures: '',
-      userArr: [],
-      nickshow: false,
-      sex: '', // 性别,
-      genderPicker: null, // 创建 ref 对象
-      columnIndex:0,
     };
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
     const Mydetail = store.get('msg');
     this.details = Mydetail.data.profile;
-    this.genders = this.details.gender;
-    this.birthdays = this.details.birthday;
-    this.nicknames = this.details.nickname;
-    this.provinces = this.details.province;
-    this.citys = this.details.city;
-    this.signatures = this.details.signature;
-    this.userArr = [
-      this.genders,
-      this.birthdays,
-      this.nicknames,
-      this.provinces,
-      this.citys,
-      this.signatures,
-    ];
-    console.log(this.userArr);
+    console.log(Mydetail); //获取用户个人信息
+    if(Mydetail){
+      let details = {};
+      if (typeof store.get('msg') == 'object') {
+        details = store.get('msg');
+      } else {
+        details = JSON.parse(store.get('msg'));
+      }
+      this.$store.state.details = details;
+    }
   },
   methods: {
-    nickShow() {
-      this.nickshow = true;
+    myMethod(){
+      this.$store.commit('updateDetails', details);  //调用 mutation方法
     },
-    closenameshow() {
-      this.nickshow = false;
-    },
-    isGender(sex) {
-      return sex === 1 ? '男' : '女';
-    },
-    //地区
-    async confirm(e) {
-      this.popupVisible = !this.popupVisible;
-      this.userArr[3] = Number(e[0].code)
-      this.userArr[4] = Number(e[1].code)
-      await updateInfo(
-        this.userArr[0],
-        this.userArr[1],
-        this.userArr[2],
-        this.userArr[3],
-        this.userArr[4],
-        this.userArr[5]
-      )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
+    setnickname() {
+      // console.log(this.nickname)
+      if (this.nickname) {
+        this.updateInfo({
+          nickname: this.nickname,
         });
+        this.nickshow = false;
+      }
+    },
+    nickShow(){this.nickshow = true},
+    updateInfomation(obj) {
+      let localuserInfo = JSON.parse(localStorage.getItem('msg'));
+      console.log(localuserInfo);
+      let oldInfo = {
+        gender: localuserInfo.gender || '',
+        birthday: localuserInfo.birthday || '',
+        nickname: localuserInfo.nickname || '',
+        province: localuserInfo.province || '',
+        city: localuserInfo.city || '',
+        signature: localuserInfo.signature || '',
+      };
+      UpdateInfo(Object.assign(oldInfo, obj))
+        .then((res) => {
+          getUserAccount()
+            .then((res) => {
+              // this.$root.$options.store.state.details = res.data.profile;
+              console.log(res.data.profile)
+              // localStorage.setItem('profile', JSON.stringify(res.data.profile));
+            })
+            .catch((err) => console.log(err));
+          console.log('更新成功');
+        })
+        .then((err) => {
+          alert('更新失败');
+        });
+      
+    },
+    confirm(res) {
+      // this.city = e[0].name.slice(0, 2)+ '  ' + e[1].name.slice(0, 2);
+      this.updateInfomation({
+        province: Number(res[0].code),
+        city: Number(res[1].code),
+      });
+      this.popupVisible = false;
     },
     appear() {
       this.popupVisible = true;
@@ -367,31 +372,21 @@ export default {
     hideDatePicker() {
       this.dataVisible = false;
     },
-    DatePicker(e){
-      const date = new Date(e);
-      const year = date.getFullYear() < 10 ? '0' + date.getFullYear() : date.getFullYear();
-      const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-      const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-      return `${year}-${month}-${day}`
+    closenameshow() {
+      this.nickshow = false;
     },
-    //日期修改 点击确定调用方法
-    async confirmDatePicker(e) {
-      this.dataVisible = !this.dataVisible;
-      this.userArr[1] = (new Date(e)).getTime();
-      await updateInfo(
-        this.userArr[0],
-        this.userArr[1],
-        this.userArr[2],
-        this.userArr[3],
-        this.userArr[4],
-        this.userArr[5]
-      )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    confirmDatePicker(e) {
+      this.dataVisible = false;
+      console.log(e); //Sun Feb 02 2014 00:00:00 GMT+0800 (中国标准时间)
+      // this.city = (e[0].name).slice(0,2) +  (e[1].name).slice(0,2)
+      const date = new Date(e);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      // const minDate = null; // 设置最小日期
+      // const maxDate = null; // 设置最大日期
+      this.time = `${year}年${month}月${day}日`;
+      store.set('SelfTime', this.time);
     },
     formatter(type, val) {
       if (type === 'year') {
@@ -408,29 +403,40 @@ export default {
     sexualApear() {
       this.sexualVisible = true;
     },
-    sexualConfirm(e,value) {
-      // this.sexualVisible = false;
-      // this.sexual = `${value}`;
-      // console.log(e);
+    sexualConfirm(e) {
+      console.log(e);
+      this.sexualVisible = false;
+      this.updateInfomation({
+        gender: e == '男' ? 1 : 2,
+      });
     },
-    async changeSex(e) {
-      this.sexualVisible = !this.sexualVisible;
-      if(e==='男') {this.userArr[0] = 1 }else{this.userArr[0] = 2}
-        await updateInfo(
-          this.userArr[0],
-          this.userArr[1],
-          this.userArr[2],
-          this.userArr[3],
-          this.userArr[4],
-          this.userArr[5]
-        )
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
+    // ...mapMutations(['toggleshow']),
+    
+  },
+  computed: {
+    ...mapState(['details', 'show']),
+  },
+  watch: {
+    nickname(newValue) {
+      if (!this.debouncedFunc) {
+        this.debouncedFunc = _.debounce(async () => {
+          try {
+            const res = await getNickname(this.nickname);
+            console.log(res.data);
+            if (res.data?.duplicated) {
+              this.$refs.nametitle.innerHTML = '昵称已被注册，请换一个';
+            } else if (res.data?.message) {
+              this.$refs.nametitle.innerHTML = res.data?.message;
+            } else if (res.data?.duplicated == false) {
+              // this.$refs.nametitle.classList.add('text-gray-50')
+              this.$refs.nametitle.innerHTML = '昵称可用';
+            }
+          } catch (err) {
             console.log(err);
-          });
+          }
+        }, 1000);
+      }
+      this.debouncedFunc();
     },
-
   },
 };
