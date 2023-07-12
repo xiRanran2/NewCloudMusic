@@ -106,3 +106,6 @@ export const updateInfo = (gender,birthday,nickname,province,city,signature) => 
 export const getNickname = (nickname) => http.get('/nickname/check',{params:{nickname}})
 //编辑信息的链接
 // export const updateInfo = (info) => http.get('/user/update',{params:{...info}})
+
+//歌词
+export const fetchLyricRequest =  (id) => http.get('/lyric', { params: { ids: id } });

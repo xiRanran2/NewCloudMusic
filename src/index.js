@@ -11,6 +11,8 @@ import App from '@/App.vue';
 import store from '@/store'
 import router from './router';
 import formateTime from './Utils/formateTime';
+import player from '@/views/HomeView/Player/player.js'
+Vue.use(player)
 // import VueRouter from 'vue-router';
 // Vue.use(VueRouter);
 

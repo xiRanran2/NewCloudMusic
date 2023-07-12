@@ -1,8 +1,7 @@
 import { Howl, Howler } from 'howler';
 import { getTrackDetail, getMP3 } from '@/request';
-import Player from './player.vue';
 
-export default class P {
+export default class {
   constructor() {
     // 播放器状态
     this._playing = false; // 是否正在播放中
@@ -188,13 +187,5 @@ export default class P {
       this.current = trackIDs.indexOf(autoPlayTrackID);
       this._replaceCurrentTrack(autoPlayTrackID);
     }
-  }  
-  static install(Vue) {
-    Vue.prototype.$player = Vue.observable(new this());
-    Vue.component("Player", Player);
   }
 }
-
-
-
- 

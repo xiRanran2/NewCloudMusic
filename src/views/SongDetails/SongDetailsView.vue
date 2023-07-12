@@ -191,7 +191,7 @@
               v-for="(item, indexs) in songlistAll"
               :key="item.key"
               class="flex w-[90%] h-[15vw] items-center justify-between  truncate"
-              @click="playAll(item)"
+              @click="playSingle(item.id)"
           >
               <div class="flex items-center">
                   <span class="text-[#9a9a9a]">{{ indexs + 1 }}</span>
@@ -271,7 +271,7 @@ export default {
   },
   methods: {
     play(){
-      window.$player.playOrPause();
+     this.$player.playOrPause();
     },
     wan(num) {
         if(num > 100000000){
@@ -296,11 +296,18 @@ export default {
       const scrollTop = window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop
       this.over = scrollTop > this.$refs.wrapper.offsetHeight / 2 ? false : true
     },
-    playAll(item){
-      window.$player.replacePlaylist(
+    playAll(){
+      this.$player.replacePlaylist(
         this.songlistAll.map((song) => song.id),'',
         '',
-        item.id
+
+      )
+    }, 
+    playSingle(id){
+      this.$player.replacePlaylist(
+        this.songlistAll.map((song) => song.id),'',
+        '',
+        id
       )
     },
   },

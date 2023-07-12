@@ -6,44 +6,24 @@
     <!-- <router-link to="/IndexView">go to index</router-link> -->
     <router-view />
     <!-- 播放器 -->
-    <Player class="fixed bottom-0 w-[100%] z-[60]"  v-if="shouldShowMyComponent" :is="myComponentName"/>
+    <Player class="fixed bottom-0 w-[100%] z-[60]" v-if="ifShow" />
     <!-- 菜单 -->
-    <Menu />
+    <!-- <Menu /> -->
   </div>
 </template>
 <script>
 import store from 'storejs';
-import Player from '@/views/HomeView/Player/Player.vue';
-import Menu from '@/views/HomeView/Menu/Menu.vue';
 export default {
-  components: { Player , Menu },
-  data(){
-    return{
+  data() {
+    return {
       switchCheckStatus: null,
-      isPlaying: false,
-      show: false,    //菜单
-    }
+    };
   },
-  methods:{
-    togglePlay() {
-        this.isPlaying = !this.isPlaying;
-    }
-  },
+  methods: {},
   computed: {
-    darkMode() {
-      // return store.state.darkMode;
+    ifShow() {
+      return this.$route.path !== '/PlayView';
     },
-    spinStyle() {
-        return this.isPlaying ? { animation: 'spin 2s linear infinite' } : {};
-    },
-    shouldShowMyComponent() {
-      // 判断当前路由是否在需要显示 MyComponent 的页面中
-      const showOnRoutes = ['/HomeView', '/song','/UserInfo','miFile'] // 修改为你需要显示的页面路径
-      return showOnRoutes.includes(this.$route.path)
-    },
-    myComponentName() {
-      return Player
-    }
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
@@ -60,7 +40,11 @@ export default {
 @tailwind components;
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

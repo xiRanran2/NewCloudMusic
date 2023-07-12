@@ -1,5 +1,6 @@
 import { Howl, Howler } from 'howler';
 import { getTrackDetail, getMP3 } from '@/request';
+import Player from './Player.vue';
 
 export default class {
   constructor() {
@@ -187,5 +188,13 @@ export default class {
       this.current = trackIDs.indexOf(autoPlayTrackID);
       this._replaceCurrentTrack(autoPlayTrackID);
     }
+  }  
+  static install(Vue) {
+    Vue.prototype.$player = Vue.observable(new this());
+    Vue.component("Player", Player);
   }
 }
+
+
+
+ 
