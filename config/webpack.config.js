@@ -66,10 +66,7 @@ module.exports = {
       vue: 'vue/dist/vue.esm.js',
       '@': path.resolve(__dirname, '../src'),
     },
-    extensions : ['.js','.json','.jsx']
-  },
-  externals: {
-    vue: 'Vue',
+    extensions: ['.js', '.json', '.jsx']
   },
   devServer: {
     open: true,
@@ -95,7 +92,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       cdn: {
-        script: ['https://cdn.jsdelivr.net/npm/vue@2'],
+        script: [],
         style: [],
       },
     }),

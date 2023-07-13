@@ -730,8 +730,8 @@ export default {
     // const mCookie = localStorage.getItem('__m__cookie');
     store.set('msg', detail);
     store.set('comment',comments)
-      
-    this.switchCheckStatus = store.get('switch');
+      this.switchCheckStatus = store.get('switch');
+    
   },
   watch: {
     userSearchKeywords: _.debounce(async function (keywords) {

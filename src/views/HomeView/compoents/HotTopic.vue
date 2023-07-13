@@ -151,11 +151,13 @@
 </template>
 
 <script>
+import store from 'storejs';
 import BScroll from '@better-scroll/core';
 export default {
   data(){
     return {
       show: false,
+      switchCheckStatus:null,
     }
   },
   name: 'HotTopic',
@@ -174,5 +176,8 @@ export default {
       });
     },
   },
+  created(){
+    this.switchCheckStatus = store.get('switch');
+  }
 };
 </script>

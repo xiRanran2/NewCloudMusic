@@ -21,15 +21,15 @@
             class="w-[90vw] flex flex-row items-center mb-[1vw]"
           >
             <img
-              :src="key.uiElement.image.imageUrl"
+              :src="key.uiElement?.image.imageUrl"
               class="w-[20vw] rounded-[2vw]"
             />
             <div class="flex flex-col ml-[2vw] mb-[1vw]">
               <p class="text-[#fff]  dark:text-[#000] text-[3vw] mb-[2vw]">
-                {{ key.uiElement.mainTitle.title }}
+                {{ key.uiElement?.mainTitle.title }}
               </p>
               <p class="text-[#aea4a4] dark:text-[#4b4545] text-[1.5vw]">
-                {{ key.uiElement.subTitle.title }}
+                {{ key.uiElement?.subTitle.title }}
               </p>
             </div>
           </div>
@@ -68,11 +68,16 @@
 </template>
 
 <script>
+    import store from 'storejs';
     export default{
       data(){
         return {
           show: false,
+          switchCheckStatus:null,
         }
+      },
+      created(){
+        this.switchCheckStatus = store.get('switch');
       },
       name:'NewSongList',
       props:['songList']

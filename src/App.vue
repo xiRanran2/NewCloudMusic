@@ -4,6 +4,7 @@
     <!-- 声明式导航 -->
 
     <!-- <router-link to="/IndexView">go to index</router-link> -->
+    <!-- 底部导航栏 -->
     <router-view />
     <!-- 播放器 -->
     <Player class="fixed bottom-0 w-[100%] z-[60]" v-if="ifShow" />
@@ -22,15 +23,15 @@ export default {
   methods: {},
   computed: {
     ifShow() {
-      return this.$route.path !== '/PlayView';
+      return this.$route.path !== '/PlayView' &&  this.$route.path !== '/Login';
     },
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
-    // setTimeout(() => {
-    //   //编程式导航
-    //   this.$router.push('/IndexView')
-    // },10000)
+    // this.$watch('$route',function(route){
+    //   console.log(route)
+    // });  //监听
+    // this.$on("hook:beforeDestory",() => {})
   },
 };
 </script>

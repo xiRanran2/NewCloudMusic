@@ -102,7 +102,7 @@
         <ul class="flex flex-col mt-[20vw]">
           <li
             v-for="item in menusongList"
-            v-bind:key = "item.id"
+            :key="item.id"
             @click="playSingle(item.id)"
             class="flex h-[10vw] leading-[10vw] items-center justify-between"
           >
@@ -114,26 +114,30 @@
               />
               <p
                 :class="
-                  item.id === $player._currentTrack.id ? 'text-[red] ml-[5vw]' : ''
+                  item.id === $player._currentTrack.id
+                    ? 'text-[red] ml-[5vw]'
+                    : ''
                 "
                 class="mr-[2vw]"
               >
                 {{ item.name }}
               </p>
               <div class="text-[#797979] dark:text-[#898989 ]">
-                <span 
-                :class="
-                item.id === $player._currentTrack.id ? 'text-[red]' : ''
-              "
+                <span
+                  :class="
+                    item.id === $player._currentTrack.id ? 'text-[red]' : ''
+                  "
                   class="text-[#c1c1c1] text-[1vw]"
                   v-for="items in item.ar"
-                  :key="items"
+                  :key="items.id"
                 >
                   {{ items.name }}&nbsp;
                 </span>
-                <span :class="
-                item.id === $player._currentTrack.id ? 'text-[red]' : ''
-              " class="text-[#c1c1c1] text-[1vw] w-[17vw] truncate"
+                <span
+                  :class="
+                    item.id === $player._currentTrack.id ? 'text-[red]' : ''
+                  "
+                  class="text-[#c1c1c1] text-[1vw] w-[17vw] truncate"
                   >-{{ item.al.name }}</span
                 >
               </div>
@@ -189,10 +193,9 @@
             <div class="flex justify-end h-[54.5vw] relative">
               <transition name="rotate-transition">
                 <img
-                :class="{ 'rotate': isPlaying }"
-                src="../../../static/needle-ab.png"
-                class="pr-[3vw] w-[36.5vw] h-[36.5vw] z-[99] absolute top-[-3px] right-[43px] "
-              />
+                  src="../../../static/needle-ab.png"
+                  class="pr-[3vw] w-[36.5vw] h-[36.5vw] z-[99] absolute top-[-3px] right-[43px]"
+                />
                 <!-- <img
                 :class="{ 'rotate': isPlaying }"
                 src="../../../static/needle-ab.png"
@@ -241,7 +244,11 @@
           <div
             class="flex items-center justify-around text-[white] mt-[4.75vw]"
           >
-            <Icon icon="icon-park-outline:loop-once" class="text-[7vw]" @click.native="playPrev" />
+            <Icon
+              icon="icon-park-outline:loop-once"
+              class="text-[7vw]"
+              @click.native="playPrev"
+            />
             <Icon icon="ph:skip-back-fill" class="text-[7vw]" />
             <span
               @click="togglePlay"
@@ -254,8 +261,16 @@
               <!-- <Icon icon="ph:play-fill" class="text-[7vw]" /> -->
               <!-- <Icon icon="ic:outline-pause" /> -->
             </span>
-            <Icon icon="entypo:controller-next" class="text-[8vw]"  @click.native="playNextTrack" />
-            <Icon @click.native="show = !show" icon="fontisto:play-list" class="text-[5.5vw]" />
+            <Icon
+              icon="entypo:controller-next"
+              class="text-[8vw]"
+              @click.native="playNextTrack"
+            />
+            <Icon
+              @click.native="show = !show"
+              icon="fontisto:play-list"
+              class="text-[5.5vw]"
+            />
           </div>
         </div>
       </div>
@@ -265,10 +280,10 @@
 
 <script>
 import store from 'storejs';
-import {playlistTracks,fetchLyricRequest} from '@/request'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
-Vue.component('VueSlider', VueSlider)
+import { playlistTracks, fetchLyricRequest } from '@/request';
+import VueSlider from 'vue-slider-component';
+import 'vue-slider-component/theme/default.css';
+// Vue.component('VueSlider', VueSlider);
 export default {
   components: {
     VueSlider,
@@ -282,14 +297,14 @@ export default {
       menusongList: [],
       cookieMusic: [],
       cookie: [],
-      playView: true,
+      playView: false,
       songLength: 0, // 初始化歌曲长度为0
-      AllSongs:[],
-      SongLyric:'',  //单曲歌词
+      AllSongs: [],
+      SongLyric: '', //单曲歌词
     };
   },
   mounted() {
-    this.getSongLength(); // 在组件挂载后获取歌曲长度
+    // this.getSongLength(); // 在组件挂载后获取歌曲长度
   },
   methods: {
     togglePlay() {
@@ -302,12 +317,13 @@ export default {
     playViewClose() {
       this.playView = false;
     },
-    playSingle(id){
+    playSingle(id) {
       this.$player.replacePlaylist(
-        this.menusongList.map((song) => song.id),'',
+        this.menusongList.map((song) => song.id),
+        '',
         '',
         id
-      )
+      );
     },
     //播放上一首
     playPrev() {
@@ -316,7 +332,7 @@ export default {
     //播放下一首
     playNextTrack() {
       this.$player.playNextTrack();
-    }
+    },
 
     // async getSongLength() {
     //   const songlists = await playlistTracks(this.$route.query.id).then((res) => {
@@ -331,7 +347,7 @@ export default {
     //   const player = this.$player; // 获取播放器对象
     //   console.log(player);
     //   // this.songLength = player.getDuration(); // 使用 $player 中的方法获取歌曲长度
-      
+
     // }
   },
   async created() {
@@ -339,14 +355,23 @@ export default {
     const songlists = store.get('songs');
     this.menusongList = songlists;
 
-    await fetchLyricRequest(this.$route.query.id).then((res) => {
-      console.log(res)
-    })
+    // await fetchLyricRequest(this.$route.query.id).then((res) => {
+    //   console.log(res)
+    // })
   },
 };
 </script>
 
 <style>
+header .van-notice-bar {
+  height: 7.19vw;
+  width: 40vw;
+  background: none;
+}
+.van-notice-bar__wrap {
+  font-size: 5vw;
+  color: white;
+}
 .red-image {
   filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='colorize'><feColorMatrix type='matrix' values='1 0 0 0 0.698 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter></svg>#colorize");
 }

@@ -122,7 +122,7 @@
               :style="`width:${music?.length * 25 + 25}vw`"
               style="justify-content: space-around"
             >
-              <div v-for="item in music" :key="item.tom" class="w-[28vw]">
+              <div v-for="item in music" :key="item.id" class="w-[28vw]">
                 <img
                   :src="item.coverImgUrl"
                   alt=""
@@ -237,13 +237,13 @@
         <ul class="ml-[5vw] pt-[14.5vw]">
           <li
             v-for="(item, indexs) in songlistAll"
-            :key="item.key"
+            :key="item.id"
             class="flex w-[90%] h-[15vw] items-center justify-between truncate"
             @click="playSingle(item.id)"
           >
             <div class="flex items-center">
               <img
-                class="w-[3vw] h-[5vw]  red-image"
+                class="w-[3vw] h-[5vw] red-image"
                 v-if="item.id === $player._currentTrack.id"
                 src="../../static/wave.gif"
               />
@@ -251,9 +251,7 @@
               <div class="flex ml-[4vw] flex-col truncate dark:text-[#000]">
                 <p
                   :class="
-                    item.id === $player._currentTrack.id
-                      ? 'text-[red]'
-                      : ''
+                    item.id === $player._currentTrack.id ? 'text-[red]' : ''
                   "
                   class="w-[60vw] truncate"
                 >
@@ -263,7 +261,7 @@
                   <span
                     class="text-[#c1c1c1] text-[1vw]"
                     v-for="items in item.ar"
-                    :key="items"
+                    :key="items.id"
                   >
                     {{ items.name }}&nbsp;
                   </span>
@@ -287,7 +285,7 @@
 <script>
 import { Sticky } from 'vant';
 import store from 'storejs';
-Vue.use(Sticky);
+// Vue.use(Sticky);
 import {
   songDetails,
   playlistTracks,

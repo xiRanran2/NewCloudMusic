@@ -111,11 +111,16 @@
 </template>
 
 <script>
+import store from 'storejs';
     export default{
       data(){
         return {
           show: false,
+          switchCheckStatus:null,
         }
+      },
+      created(){
+        this.switchCheckStatus = store.get('switch');
       },
         name:'RankingList',
         props:['blocks']

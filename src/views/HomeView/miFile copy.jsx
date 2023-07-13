@@ -17,38 +17,10 @@ Vue.use(DatetimePicker).use(Picker);
 
 // console.log(dayjs(1688733891207).fromNow().replace('',''))
 const Wrapper = styled.div`
-  /* .van-popup   .van-picker .van-picker__columns   {background-color: #272727} */
-  /* .van-popup .van-popup--bottom {
-    background-color: red;
-  }
-  .van-popup .van-picker {
-    background-color: #1a1a1d;
-  }
-  .van-popup .van-picker.dark{
-    background-color: #fff;
-  }
-  .van-picker-column__wrapper .van-picker-column__item {
-    padding-left: 5vw;
-  }
-  .van-picker__columns .van-picker-column {
-    background: #272727;
-  }
-  .van-picker__columns .van-picker-column.dark{
-    background-color: #fff;
-  }
-  .van-hairline-unset--top-bottom .van-picker__frame {
-    background-color: #2d2d2d;
-  }
-  .van-hairline-unset--top-bottom .van-picker__frame.dark{
-    background-color: #fff;
-  } */
   .van-popup--center {
     width: 100%;
     top: 87%;
   }
-  /* .van-ellipsis {
-    color: white;
-  } */
   .van-picker__confirm {
     color: red;
   }
@@ -59,7 +31,6 @@ const Wrapper = styled.div`
     width: 88vw;
     height: 13.14vw;
     line-height: 13.14vw;
-    /* border-bottom: 0.09vw solid; */
     display: flex;
     justify-content: space-between;
   }

@@ -69,6 +69,8 @@
   
   <script>
   import dayjs from 'dayjs';
+  import store from 'storejs';
+  import Vue from 'vue';
   Vue.prototype.dayjs = dayjs;
   
   export default {
@@ -76,8 +78,10 @@
     props: ['calendar'],
     data() {
       return {
-        calendar:[],
-        show:false
+        // calendar:[],
+        show:false,
+        switchCheckStatus:null,
+        onlineTime: "" // 设置初始值
       };
     },
     methods: {
@@ -90,5 +94,8 @@
         return this.calendar.filter((item, index) => index < 2);
       },
     },
+    created(){
+        this.switchCheckStatus = store.get('switch');
+      },
   };
   </script>

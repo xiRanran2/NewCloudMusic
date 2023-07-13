@@ -44,7 +44,7 @@
             class="text-[5vw] absolute bottom-[11vw] right-0"
           />
           <img
-            :src="item.uiElement.image.imageUrl"
+            :src="item.uiElement?.image.imageUrl"
             class="w-[29vw] h-[30vw] rounded-[3vw]"
             @click="songDetails(item.resources[0]?.resourceId)"
           />
@@ -85,13 +85,14 @@
   </div>
 </template>
 <script>
+import store from 'storejs'
   export default {
     data() {
       return {
         visible: 0,
-        // resourceData: '',
-        bannerPic: [],
-        personalized:[],
+        resourceData: '',
+        show:false,
+        switchCheckStatus:null,
       };
     },
     name: 'RecommendedSongs',
@@ -122,6 +123,9 @@
         // console.log(id)  //7487787817
         this.$router.push({path:'/song',query:{id}});
       }
+    },
+    created(){
+      this.switchCheckStatus = store.get('switch');
     }
   };
 </script>

@@ -46,6 +46,7 @@
   </div>
 </template>
 <script>
+import store from 'storejs'
 // import {getUserAccount} from '@/request'
 export default {
   // async created(){
@@ -56,6 +57,7 @@ export default {
   // },
   data(){
     return {
+      switchCheckStatus:null,
       // myInfo:[],
     }
   },
@@ -126,6 +128,9 @@ export default {
       }
     },
   },
+  created(){
+    this.switchCheckStatus = store.get('switch');
+  }
 };
 </script>
 <style scoped>
