@@ -41,10 +41,10 @@ export default [
     path: '/College',
     component: () => import('@/views/HomeView/editInfo/College')
   },
-  // {
-  //   path: '/PlayView',
-  //   component: PlayView
-  // },
+  {
+    path: '/PlayView',
+    component: PlayView
+  },
   // {
   //   path:'/player',
   //   component:player

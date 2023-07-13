@@ -129,6 +129,7 @@ export default class {
     return [this.list[this.current + 1], this.current + 1];
   }
 
+  //播放下一首
   playNextTrack() {
     const [trackID, index] = this._getNextTrack();
     if (trackID === undefined) {
@@ -138,6 +139,17 @@ export default class {
     }
     this.current = index;
     this._replaceCurrentTrack(trackID);
+    return true;
+  }
+  //播放上一首
+  playPrevTrack() {
+    const prevIndex = this.current - 1;
+    if (prevIndex < 0) {
+      return false;
+    }
+    const prevTrackID = this.list[prevIndex];
+    this.current = prevIndex;
+    this._replaceCurrentTrack(prevTrackID);
     return true;
   }
 

@@ -191,8 +191,13 @@
                 <img
                 :class="{ 'rotate': isPlaying }"
                 src="../../../static/needle-ab.png"
-                class="pr-[3vw] w-[33.66vw] h-[41.5vw] mt-[3vw] z-[99] absolute top-[-21px] right-[41px] rotate-[341deg]"
+                class="pr-[3vw] w-[36.5vw] h-[36.5vw] z-[99] absolute top-[-3px] right-[43px] "
               />
+                <!-- <img
+                :class="{ 'rotate': isPlaying }"
+                src="../../../static/needle-ab.png"
+                class="pr-[3vw] w-[33.66vw] h-[41.5vw] mt-[3vw] z-[99] absolute top-[-21px] right-[41px] rotate-[341deg]"
+              /> -->
               </transition>
             </div>
             <!-- 黑胶唱片 -->
@@ -236,7 +241,7 @@
           <div
             class="flex items-center justify-around text-[white] mt-[4.75vw]"
           >
-            <Icon icon="icon-park-outline:loop-once" class="text-[7vw]" />
+            <Icon icon="icon-park-outline:loop-once" class="text-[7vw]" @click.native="playPrev" />
             <Icon icon="ph:skip-back-fill" class="text-[7vw]" />
             <span
               @click="togglePlay"
@@ -249,7 +254,7 @@
               <!-- <Icon icon="ph:play-fill" class="text-[7vw]" /> -->
               <!-- <Icon icon="ic:outline-pause" /> -->
             </span>
-            <Icon icon="entypo:controller-next" class="text-[8vw]" />
+            <Icon icon="entypo:controller-next" class="text-[8vw]"  @click.native="playNextTrack" />
             <Icon @click.native="show = !show" icon="fontisto:play-list" class="text-[5.5vw]" />
           </div>
         </div>
@@ -277,7 +282,7 @@ export default {
       menusongList: [],
       cookieMusic: [],
       cookie: [],
-      playView: false,
+      playView: true,
       songLength: 0, // 初始化歌曲长度为0
       AllSongs:[],
       SongLyric:'',  //单曲歌词
@@ -304,21 +309,30 @@ export default {
         id
       )
     },
-    async getSongLength() {
-      const songlists = await playlistTracks(this.$route.query.id).then((res) => {
-          // console.log(res)
-          this.AllSongs = res.data.songs
-          // console.log(this.AllSongs);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        // console.log(songlists)
-      const player = this.$player; // 获取播放器对象
-      console.log(player);
-      this.songLength = player.getDuration(); // 使用 $player 中的方法获取歌曲长度
-      
+    //播放上一首
+    playPrev() {
+      this.$player.playPrevTrack();
+    },
+    //播放下一首
+    playNextTrack() {
+      this.$player.playNextTrack();
     }
+
+    // async getSongLength() {
+    //   const songlists = await playlistTracks(this.$route.query.id).then((res) => {
+    //       // console.log(res)
+    //       this.AllSongs = res.data.songs
+    //       // console.log(this.AllSongs);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    //     // console.log(songlists)
+    //   const player = this.$player; // 获取播放器对象
+    //   console.log(player);
+    //   // this.songLength = player.getDuration(); // 使用 $player 中的方法获取歌曲长度
+      
+    // }
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
@@ -365,5 +379,9 @@ export default {
   transform-origin: top left; /* 设置旋转的原点为左上角 */
   transition: transform 0.5s ease; /* 过渡效果的时间和缓动函数 */
   transform: rotate(45deg); /* 图片旋转45度 */
+}
+/* 背景 */
+.bgColor {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
