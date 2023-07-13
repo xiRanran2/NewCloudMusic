@@ -5,7 +5,7 @@
     <!-- 播放 -->
     <div class="w-[91vw] m-auto flex items-center justify-between">
       <!-- 添加点击跳转播放页的点击事件 -->
-      <div class="flex items-center" @click="playViewShow">
+      <div class="flex items-center" @click="()=>{this.$router.push('/PlayView')}">
         <div
           class="w-[11vw] bg-[#1a1a1a] rounded-[50%] p-[1.78vw] flex items-center"
         >
@@ -54,7 +54,6 @@
         </span>
       </div>
     </div>
-
     <!-- 底部弹出框 歌单列表 -->
     <van-popup v-model="show" position="bottom" :style="{ height: '65%' }">
       <div class="text-[#fff] dark:text-[#000] p-[4.8vw] relative">
@@ -149,132 +148,7 @@
         </ul>
       </div>
     </van-popup>
-
-    <!-- 播放器页面 -->
-    <van-popup class=" " v-model="playView" position="bottom">
-      <div
-        class="w-screen h-screen bg-gradient-to-b from-[#132435] to-[#1b3a51]"
-      >
-        <div class="w-[90.77vw] m-auto">
-          <header class="flex items-center pt-[2vw] justify-between">
-            <Icon
-              icon="simple-line-icons:arrow-up"
-              color="white"
-              :rotate="2"
-              class="text-[6.8vw]"
-              @click.native="playViewClose"
-            />
-            <div class="flex flex-col pt-[3vw]">
-              <van-notice-bar
-                scrollable
-                :text="$player._currentTrack?.name"
-                class="text-[#fff] w-[58vw]"
-              />
-              <div class="flex items-center justify-center mt-[1.05vw]">
-                <span class="text-[#9d9fa4] mr-[4vw]">{{
-                  this.menusongList[0].al.name
-                }}</span>
-                <p
-                  class="bg-[#3f4651] rounded-[2vw] px-[2.37vw] py-[0.85vw] text-[#fff] text-[1vw]"
-                >
-                  关注
-                </p>
-              </div>
-            </div>
-            <Icon
-              icon="ri:share-circle-line"
-              color="white"
-              class="text-[6.8vw]"
-            />
-          </header>
-          <!-- 歌词 lyric -->
-          <div>
-            <!-- 中间单独一张图片 -->
-            <div class="flex justify-end h-[54.5vw] relative">
-              <transition name="rotate-transition">
-                <img
-                  src="../../../static/needle-ab.png"
-                  class="pr-[3vw] w-[36.5vw] h-[36.5vw] z-[99] absolute top-[-3px] right-[43px]"
-                />
-                <!-- <img
-                :class="{ 'rotate': isPlaying }"
-                src="../../../static/needle-ab.png"
-                class="pr-[3vw] w-[33.66vw] h-[41.5vw] mt-[3vw] z-[99] absolute top-[-21px] right-[41px] rotate-[341deg]"
-              /> -->
-              </transition>
-            </div>
-            <!-- 黑胶唱片 -->
-            <div class="relative w-[82vw] h-[82vw] mt-[-28vw] ml-[3vw]">
-              <img
-                src="../../../static/disc_light.png"
-                class="w-[74.81vw] h-[67.81vw] absolute top-[3vw] left-[1vw]"
-              />
-              <img
-                src="../../../static/disc_black.png"
-                class="w-[76.64vw] h-[76.64vw]"
-              />
-              <img
-                :class="{ 'paused-animation': !this?.$player?._playing }"
-                :src="$player._currentTrack?.al?.picUrl"
-                class="w-[48vw] h-[47vw] rounded-[50%] absolute top-[15vw] left-[14vw] rotate-image"
-              />
-            </div>
-          </div>
-          <!-- 收藏  下载 唱 评论 更多 -->
-          <div class="flex justify-around text-[white] mt-[2.79vw]">
-            <Icon
-              class="w-[9.64vw] h-[5.73vw]"
-              icon="streamline:interface-favorite-heart-reward-social-rating-media-heart-it-like-favorite-love"
-            />
-            <Icon class="w-[9.64vw] h-[5.73vw]" icon="circum:save-down-1" />
-            <Icon
-              class="w-[9.64vw] h-[5.73vw]"
-              icon="iconamoon:music-album-bold"
-            />
-            <Icon class="w-[9.64vw] h-[5.73vw]" icon="uil:comment-lines" />
-            <Icon class="w-[9.64vw] h-[5.73vw]" icon="uim:ellipsis-v" />
-          </div>
-          <!-- 滑块 -->
-          <div class="flex items-center mt-[6vw]">
-            <span class="mr-[2vw] text-[#586c71]">00:00</span>
-            <vue-slider v-model="value"></vue-slider>
-            <span class="text-[#586c71]">{{ songLength }}</span>
-          </div>
-          <!-- 随机 上一首 播放 下一首 菜单 -->
-          <div
-            class="flex items-center justify-around text-[white] mt-[4.75vw]"
-          >
-            <Icon
-              icon="icon-park-outline:loop-once"
-              class="text-[7vw]"
-              @click.native="playPrev"
-            />
-            <Icon icon="ph:skip-back-fill" class="text-[7vw]" />
-            <span
-              @click="togglePlay"
-              class="w-[14.36vw] h-[14.36vw] rounded-[50%] flex items-center justify-center border-white border-[1px] border-[solid] text-[white]"
-            >
-              <Icon
-                :icon="!$player._playing ? 'ph:play-fill' : 'ic:outline-pause'"
-                class="text-[7vw]"
-              />
-              <!-- <Icon icon="ph:play-fill" class="text-[7vw]" /> -->
-              <!-- <Icon icon="ic:outline-pause" /> -->
-            </span>
-            <Icon
-              icon="entypo:controller-next"
-              class="text-[8vw]"
-              @click.native="playNextTrack"
-            />
-            <Icon
-              @click.native="show = !show"
-              icon="fontisto:play-list"
-              class="text-[5.5vw]"
-            />
-          </div>
-        </div>
-      </div>
-    </van-popup>
+    
   </div>
 </template>
 
@@ -333,31 +207,11 @@ export default {
     playNextTrack() {
       this.$player.playNextTrack();
     },
-
-    // async getSongLength() {
-    //   const songlists = await playlistTracks(this.$route.query.id).then((res) => {
-    //       // console.log(res)
-    //       this.AllSongs = res.data.songs
-    //       // console.log(this.AllSongs);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    //     // console.log(songlists)
-    //   const player = this.$player; // 获取播放器对象
-    //   console.log(player);
-    //   // this.songLength = player.getDuration(); // 使用 $player 中的方法获取歌曲长度
-
-    // }
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
     const songlists = store.get('songs');
     this.menusongList = songlists;
-
-    // await fetchLyricRequest(this.$route.query.id).then((res) => {
-    //   console.log(res)
-    // })
   },
 };
 </script>
@@ -404,9 +258,5 @@ header .van-notice-bar {
   transform-origin: top left; /* 设置旋转的原点为左上角 */
   transition: transform 0.5s ease; /* 过渡效果的时间和缓动函数 */
   transform: rotate(45deg); /* 图片旋转45度 */
-}
-/* 背景 */
-.bgColor {
-  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

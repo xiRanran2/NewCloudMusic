@@ -2,7 +2,7 @@ import SearchView from '../views/SearchView/SearchView.vue'
 import HomeView from '../views/HomeView/HomeView.vue';
 import SongDetailsView from '../views/SongDetails/SongDetailsView.vue'
 // import player from '../views/HomeView/Player/Player.vue'
-// import PlayView from '../views/HomeView/PlayView.vue'
+import PlayView from '../views/HomeView/PlayView.vue'
 export default [
   //路径重定向
   {
@@ -34,17 +34,9 @@ export default [
     component: () => import('@/views/HomeView/miFile')
   },
   {
-    path: '/nickname',
-    component: () => import('@/views/HomeView/editInfo/nickname')
+    path: '/PlayView',
+    component: PlayView
   },
-  {
-    path: '/College',
-    component: () => import('@/views/HomeView/editInfo/College')
-  },
-  // {
-  //   path: '/PlayView',
-  //   component: PlayView
-  // },
   // {
   //   path:'/player',
   //   component:player
