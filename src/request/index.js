@@ -108,4 +108,13 @@ export const getNickname = (nickname) => http.get('/nickname/check',{params:{nic
 // export const updateInfo = (info) => http.get('/user/update',{params:{...info}})
 
 //歌词
-export const fetchLyricRequest =  (id) => http.get('/lyric', { params: { ids: id } });
+// export const fetchLyricRequest =  (id) => http.get('/lyric', {params:{id}});
+export const fetchLyricRequest = (id) => http.get("/lyric",{params:{id}})
+
+// //MV
+export const MvList = (area) =>
+  http.get('/top/mv', { params: { limit: 50, area } });
+
+//MV排行榜
+export const MVList = (area) =>
+  http.get('/top/mv', { params: { limit: 50, area } });

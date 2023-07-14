@@ -5,17 +5,18 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Drawer from '@/components/Drawer/Drawer.vue'
 import Switch from '@/components/Switch/Switch.vue'
-import { Swipe, SwipeItem, Popup, Area, Button, Circle } from 'vant';
+import { Swipe, SwipeItem, Popup, Area, Button, Circle,NavBar, Tab, Tabs } from 'vant';
 import App from '@/App.vue';
 import store from '@/store'
 import router from './router';
 import formateTime from './Utils/formateTime';
 import player from '@/views/HomeView/Player/player.js'
 Vue.use(player)
-// import VueRouter from 'vue-router';
-// Vue.use(VueRouter);
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
-Vue.use(Swipe).use(SwipeItem).use(Popup).use(Area).use(Button).use(formateTime).use(Circle);
+
+Vue.use(Swipe).use(SwipeItem).use(Popup).use(Area).use(Button).use(formateTime).use(Circle).use(NavBar).use(Tab).use(Tabs);
 // Vue.use(SwipeItem);
 // Vue.use(Dialog)
 dayjs.extend(relativeTime);

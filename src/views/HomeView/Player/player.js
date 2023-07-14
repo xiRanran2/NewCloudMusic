@@ -90,7 +90,7 @@ export default class {
 
   async _getAudioSourceFromNetease(track) {
     const data = await getMP3(track.id);
-    console.log(data.data.data[0].url);
+    // console.log(data.data.data[0].url);
     return new Promise((resolve) => {
       resolve(data.data.data[0].url);
     });
