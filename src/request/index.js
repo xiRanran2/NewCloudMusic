@@ -109,12 +109,29 @@ export const getNickname = (nickname) => http.get('/nickname/check',{params:{nic
 
 //歌词
 // export const fetchLyricRequest =  (id) => http.get('/lyric', {params:{id}});
-export const fetchLyricRequest = (id) => http.get("/lyric",{params:{id}})
+export const getLyric = (id) => http.get("/lyric",{params:{id}})
 
 // //MV
-export const MvList = (area) =>
-  http.get('/top/mv', { params: { limit: 50, area } });
+// export const MvList = (area) =>
+//   http.get('/top/mv', { params: { limit: 50, area } });
 
 //MV排行榜
 export const MVList = (area) =>
   http.get('/top/mv', { params: { limit: 50, area } });
+
+/**
+ * @description MV视频
+ */
+export const featMvUrl = (id) => http.get('/mv/url', { params: { id } });
+
+/**
+ * @description MV视频信息
+ */
+export const featMvDetail = (mvid) =>
+  http.get('/mv/detail', { params: { mvid } });
+
+/**
+ * @description 获取 mv 点赞转发评论数数据
+ */
+export const featMvDetailInfo = (mvid) =>
+  http.get('/mv/detail/info', { params: { mvid } });

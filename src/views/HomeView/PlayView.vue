@@ -1,15 +1,15 @@
 <template>
-  <div class="">
+  <div>
     <div class="z-[3] w-screen h-screen relative">
       <div class="w-[90.77vw] m-auto">
-        <header class="flex items-center pt-[2vw] justify-between">
+        <header class="flex items-center pt-[2vw] justify-between z-[999]">
           <Icon icon="simple-line-icons:arrow-up" color="white" :rotate="2" class="text-[6.8vw]" @click.native="ExitFn" />
           <div class="flex flex-col pt-[3vw]">
             <van-notice-bar scrollable :text="$player._currentTrack?.name" class="text-[#fff] w-[58vw]" />
             <div class="flex items-center justify-center mt-[1.05vw]">
-              <!-- <span class="text-[#9d9fa4] mr-[4vw]">{{
+              <span class="text-[#9d9fa4] mr-[4vw]">{{
                 $player._currentTrack?.ar[0].name
-              }}</span> -->
+              }}</span>
               <p class="rounded-[2vw] px-[2.37vw] py-[0.85vw] text-[#fff] text-[1vw]"
                 style="background: rgba(255, 255, 255, 0.2)">
                 关注
@@ -19,16 +19,46 @@
           <Icon icon="ri:share-circle-line" color="white" class="text-[6.8vw]" />
         </header>
         <!-- 歌词 lyric -->
-        <ul v-if="!ifLyricShow" @click="ifLyricShow = !ifLyricShow"
+        <!-- <div v-if="!ifLyricShow" @click="ifLyricShow = !ifLyricShow"
           class="menu flex flex-col items-center w-[69.74vw] h-[102.5vw] m-auto overflow-auto ">
-          <li v-for="(item, index) in lyrics" :key="index"
-          :class="{'highlighted': index === currentIndex}"
+          <div class="menu absolute top-0 transition-all duration-1000  w-[69.74vw] h-[102.5vw] m-auto overflow-auto "
+          :style="{ top: -$player.lineHieght + 'vw' }"
+          v-if="lyricsLoadingStatus">
+            <div v-for="(item, index) in $player.lyricLines" :key="index"
+            :style="{
+              color:
+                index === $player.lineIndex ? '#fff' : 'hsla(0,0%,88.2%,.7)',
+            }"
             class="p-[4vw] text-[hsla(0,0%,88.2%,.8)] flex justify-center text-center h-[10vw] leading-[10vw]">
             {{ item.txt }}
-            <!-- <p> 时间{{item.time}}</p>    -->
-            <!-- <p class="parseLyrics(lrcs)">解析歌词</p> -->
-          </li>
-        </ul>
+          </div>
+          </div>
+        </div> -->
+        <div class="flex justify-center">
+          <div
+          class="w-[69.74vw] h-[102.5vw] flex items-center flex-wrap px-[6vw] justify-center overflow-hidden relative internalShadow"
+          v-if="!ifLyricShow"
+          @click="ifLyricShow = !ifLyricShow"
+        >
+          <div
+            class="absolute top-0 transition-all duration-1000"
+            :style="$player._playing ? { top: -$player.lineHieght + 'vw' } : { top: -$player.lineHieght + 'vw' }"
+            v-if="lyricsLoadingStatus"
+          >
+            <div
+              v-for="(line, index) in $player.lyricLines"
+              :key="index"
+              class="p-[4vw] text-[hsla(0,0%,88.2%,.8)] line-clamp-2 w-[100%] flex justify-center text-center"
+              :style="{
+                color:
+                  index === $player.lineIndex ? '#fff' : 'hsla(0,0%,88.2%,.7)',
+              }"
+            >
+              {{ line.txt }}
+            </div>
+          </div>
+       </div>
+       </div>
 
         <!-- 点击隐藏 -->
         <div class="h-[102.5vw]" v-if="ifLyricShow" @click="ifLyricShow = !ifLyricShow">
@@ -53,7 +83,7 @@
             icon="streamline:interface-favorite-heart-reward-social-rating-media-heart-it-like-favorite-love" />
           <Icon class="w-[9.64vw] h-[5.73vw]" icon="circum:save-down-1" />
           <Icon class="w-[9.64vw] h-[5.73vw]" icon="iconamoon:music-album-bold" />
-          <Icon class="w-[9.64vw] h-[5.73vw]" icon="uil:comment-lines" />
+          <van-icon class="w-[9.64vw] h-[5.73vw]" name="chat-o" badge="999+" />
           <Icon class="w-[9.64vw] h-[5.73vw]" icon="uim:ellipsis-v" />
         </div>
         <!-- 滑块 -->
@@ -147,8 +177,8 @@ import Vue from 'vue';
 import store from 'storejs';
 import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
-import Lyric from 'lyric-parser';
-import { fetchLyricRequest } from '@/request';
+// import Lyric from 'lyric-parser';
+// import { fetchLyricRequest } from '@/request';
 Vue.component('VueSlider', VueSlider);
 export default {
   components: {
@@ -157,8 +187,6 @@ export default {
   data() {
     return {
       menusongList: [],
-      value: 0,
-      marks: [50],
       show: false,
       lyrics: [],
       ifLyricShow: true,
@@ -166,31 +194,10 @@ export default {
       currentIndex:-1,
       lyricsongs:[],
       lrcs:'',   //歌词 好大一串
-      // ifBlackShow:true
+      lyricsLoadingStatus:true,
     };
   },
   methods: {
-    //解析歌词
-    parseLyrics(lyricsData) {
-      const lines = lyricsData.split('\n');
-      const lyricsongs = [];
-
-      lines.forEach(line => {
-        const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})\]/;
-        const timeMatches = line.match(timeRegex);
-        if (timeMatches) {
-          const minutes = parseInt(timeMatches[1]);
-          const seconds = parseInt(timeMatches[2]);
-          const milliseconds = parseInt(timeMatches[3]);
-          const time = minutes * 60 + seconds + milliseconds / 100;
-          const content = line.replace(timeRegex, '').trim();
-          lyricsongs.push({ time, content });
-        }
-      });
-
-      this.lyricsongs = lyricsongs;
-    },
-
     ExitFn() {
       this.$router.go(-1);
     },
@@ -203,7 +210,6 @@ export default {
       };
       return `${formatNumber(minutes)}:${formatNumber(remainingSeconds)}`;
     },
-
     togglePlay() {
       this.play = !this.play;
       this.$player.playOrPause();
@@ -242,38 +248,14 @@ export default {
     this.switchCheckStatus = store.get('switch');
     const songlists = store.get('songs');
     this.menusongList = songlists; //所有的歌单列表
-    //歌词
-    fetchLyricRequest(this.$player._currentTrack.id).then((res) => {
-      console.log(res);
-      let fetchLyricRequest = new Lyric(res.data.lrc.lyric);
-      this.lyrics = fetchLyricRequest.lines;
-      this.lrcs = fetchLyricRequest.lrc
-      console.log( this.lrcs);
-    });
-  },
-  mounted() {
-    console.log(lrcs)
-    this.parseLyrics(lrcs); // 调用解析歌词方法
-    // setInterval(() => {
-    //   // this.currentTime = this.$refs.audio.currentTime;
-    //   // this.currentTime = this.$player._duration//总时长
-    //   this.currentTime = this.$player.process  //当前进度
-    // }, 100);
-    // 模拟播放器获取当前时间的定时器
-    setInterval(() => {
-      const currentTime = 5; // 假设当前播放时间为 5 秒
-      for (let i = 0; i < this.lyrics.length; i++) {
-        if (currentTime >= this.lyrics[i].time && currentTime < this.lyrics[i + 1].time) {
-          this.currentIndex = i;
-          break;
-        }
-      }
-    }, 1000);
   },
 };
 </script>
 
-<style>
+<style scoped>
+.vue-slider-process{
+  background-color: #d9d9d9;
+}
 header .van-notice-bar {
   height: 7.19vw;
   width: 63vw;

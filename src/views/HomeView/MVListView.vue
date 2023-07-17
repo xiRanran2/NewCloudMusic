@@ -1,9 +1,8 @@
 <template>
-  <div
-    :class="{ dark: switchCheckStatus }"
-    class=" bg-[#151515] dark:bg-[#fff]"
-  >
-    <div class="m-auto h-[100vh] overflow-y-auto bg-[#151515] dark:bg-[#fff] dark:text-[#333334] text-[#fff]">
+  <div :class="{ dark: switchCheckStatus }" class="bg-[#151515] dark:bg-[#fff]">
+    <div
+      class="m-auto h-[100vh] overflow-y-auto bg-[#151515] dark:bg-[#fff] dark:text-[#333334] text-[#fff]"
+    >
       <!-- 头部 -->
       <header
         class="px-[4.96vw] w-screen flex h-[17.9vw] items-center pl-[2vw] fixed top-0 left-0 bg-[#151515] dark:bg-[#fff] z-[99]"
@@ -22,7 +21,7 @@
         swipeable
         animated
         offset-top="17.9vw"
-        class="mt-[17vw] bg-[#151515] px-[4.19vw]"
+        class="mt-[17vw] bg-[#151515] px-[4.19vw] dark:bg-[#fff]"
       >
         <van-tab v-for="items in title" :key="items.id" :title="items">
           <!-- 更新时间 -->
@@ -42,9 +41,10 @@
               <img
                 :src="item.cover"
                 class="w-[91.62vw] h-[51.62vw] rounded-[4vw] m-auto"
+                @click="showThisVideo(item.id)"
               />
               <!-- 播放量 -->
-              <div class="flex absolute top-[1vw] right-[2vw] items-center">
+              <div class="flex absolute top-[1vw] right-[2vw] items-center dark:text-[#fff]">
                 <Icon icon="ph:play" />
                 <span class="">{{ wan(item.playCount) }}</span>
               </div>
@@ -77,7 +77,9 @@
                       ><Icon icon="ci:line-m" :rotate="1"
                     /></span>
                     <span
-                      v-else-if="item.lastRank <= index + 1 && item.lastRank != -1"
+                      v-else-if="
+                        item.lastRank <= index + 1 && item.lastRank != -1
+                      "
                       class="text-[#71b3e2] flex text-[2vw] items-center"
                       ><Icon icon="ph:triangle-fill" :rotate="2" /><i>{{
                         index + 1 - item.lastRank
@@ -92,12 +94,12 @@
                     >
                     <span
                       v-else
-                      class="text-[#6d9c65] flex text-[1vw] items-center absolute right-0 bottom-0"
+                      class="text-[#6d9c65] flex text-[1vw] items-center absolute right-[-12px] bottom-0"
                       >NEW</span
                     >
                   </div>
                 </div>
-                <div class="flex flex-col ml-[4.56vw]">
+                <div class="flex flex-col ml-[6.56vw]">
                   <p class="w-[76.62vw] truncate">{{ item.mv.title }}</p>
                   <p
                     class="text-[#666] dark:text-[#999] text-[3.08vw] mt-[0.5vw] w-[80vw] truncate"
@@ -147,6 +149,10 @@ export default {
         return num;
       }
     },
+    showThisVideo(id){
+      console.log(id)
+      this.$router.push({name:'VideoPlayView',params:{id}})
+    },
   },
   created() {
     this.switchCheckStatus = store.get('switch');
@@ -167,28 +173,46 @@ export default {
 </script>
 
 <style>
+.van-tabs__line{
+  width: 20px !important;
+}
+.van-tabs__nav--line {
+  padding-bottom: 8px !important;
+}
 .van-tabs__nav {
   background-color: #151515 !important;
+}
+.dark .van-tabs__nav {
+  background-color: #fff !important;
 }
 .van-tab--active {
   color: white !important;
 }
+.dark .van-tab--active {
+  font-weight: 600;
+  color: #000 !important;
+}
 .van-tabs {
   height: 14vw !important;
-  
 }
 .van-tabs__wrap {
-  width:92%;
+  width: 92%;
   position: fixed;
   top: 15vw;
   background-color: #151515;
   z-index: 3;
 }
+.dark .van-tabs__wrap {
+  background-color: #fff !important;
+}
 i {
   text-decoration: none;
 }
-.van-tabs__track{
+.van-tabs__track {
   width: 100% !important;
   background-color: #151515;
+}
+.dark .van-tabs__track {
+  background-color: #fff;
 }
 </style>

@@ -63,14 +63,14 @@
               <span>更多内容</span>
             </li>
           </ul>
-        </van-popup>
+      </van-popup>
     </div>
 </template>
   
   <script>
+  import Vue from 'vue';
   import dayjs from 'dayjs';
   import store from 'storejs';
-  import Vue from 'vue';
   Vue.prototype.dayjs = dayjs;
   
   export default {
@@ -78,16 +78,15 @@
     props: ['calendar'],
     data() {
       return {
-        // calendar:[],
         show:false,
         switchCheckStatus:null,
-        onlineTime: "" // 设置初始值
+        onlineTime: new Date(), // 或者您可以根据需要初始化一个时间
       };
     },
     methods: {
-      clickMe() {
-        this.$emit('updateMsg', this.$refs.getTitle.innerHTML);
-      },
+      // clickMe() {
+      //   this.$emit('updateMsg', this.$refs.getTitle.innerHTML);
+      // },
     },
     computed: {
       name() {

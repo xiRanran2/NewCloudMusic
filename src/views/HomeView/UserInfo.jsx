@@ -10,6 +10,13 @@ const Wrapper = styled.div`
   .t {
     font-size: 1vw;
   }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 `;
 export default {
   render() {
@@ -21,8 +28,10 @@ export default {
                 </div> */}
         <div class={this.switchCheckStatus ? 'dark' : ''}>
           <div class="text-[#fff] bg-[#1a1c23] dark:bg-[#f5f5f8]">
+            
             <img src={this.info?.backgroundUrl} class="w-screen h-[67.33vw]" />
-            <div class="w-[100%] flex justify-between items-center  text-[6vw] fixed top-0 px-[4vw] py-[3vw] z-[99]">
+            
+            <div class="w-[100%] flex justify-between items-center bg-[#1a1c23] dark:bg-[#f5f5f8] dark:text-[black]  text-[6vw] fixed top-0 px-[4vw] py-[3vw] z-[99]">
               <router-link to="/HomeView">
                 <Icon
                   icon="material-symbols:navigate-before"
@@ -33,10 +42,13 @@ export default {
             </div>
             <section class=" relative flex flex-col items-center justify-center">
               <div class="w bg-[#303239] dark:bg-[#fdfdfd] h-[46.8vw] m-auto absolute top-[-3.45vw]">
+              <transition  name="fade">
                 <img
+                 v-if="showImage"
                   src={this.info?.avatarUrl}
-                  class="w-[19vw] rounded-[50%] absolute top-[-8vw] left-[38%]"
+                  class="hd w-[19vw] rounded-[50%] absolute top-[-8vw] left-[38%]"
                 />
+                </transition>
                 <div class="w-[64vw] h-[32vw] left-[15%] dark:text-[#000]  absolute top-[31%] text-center">
                   <p>{this.info?.nickname}</p>
                   {/* 关注粉丝等级 */}
@@ -297,16 +309,17 @@ export default {
       commentsHistory: [],
       commentMusic: '',
       switchCheckStatus: null,
+      showImage: true,
     };
   },
   async created() {
     this.switchCheckStatus = store.get('switch');
-    console.log(this.switchCheckStatus);
+    // console.log(this.switchCheckStatus);
     const myInfo = await getUserAccount();
     const detail = await getUserDetail(myInfo.data.profile.userId);
     this.info = myInfo.data.profile;
     this.details = detail.data;
-    // console.log(this.details);
+    console.log(this.info);
     // console.log(this.details.profile);
     // console.log(areaList)
     const res4 = await fetchPlaylist(detail.data.profile.userId);
@@ -353,5 +366,24 @@ export default {
     isGender(sex) {
       return sex === 1 ? '男' : '女';
     },
+    handleScroll() {
+      const windowHeight = window.innerHeight;
+      const image = document.querySelector('.hd');
+      // console.log(image);
+      const imageHeight = image.offsetHeight;
+      const imageTop = image.getBoundingClientRect().top;
+
+      if (imageTop < windowHeight - imageHeight && imageTop > -imageHeight) {
+        this.showImage = true;
+      } else {
+        this.showImage = false;
+      }
+    },
+    beforeDestroy() {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
   },
+  mounted(){
+    window.addEventListener('scroll', this.handleScroll);
+  }
 };

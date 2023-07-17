@@ -1,6 +1,9 @@
 import { Howl, Howler } from 'howler';
-import { getTrackDetail, getMP3 } from '@/request';
+import { getTrackDetail, getMP3,getLyric } from '@/request';
 import Player from './Player.vue';
+import Lyric from 'lyric-parser';
+
+let lyricPlayer = null;
 
 export default class {
   constructor() {
@@ -26,6 +29,10 @@ export default class {
     this._personalFMTrack = { id: 0 }; // 私人FM当前歌曲
     this._personalFMNextTrack = { id: 0 }; // 私人FM下一首歌曲信息（为了快速加载下一首）
 
+    this.lyricLines = []; //歌词数组
+    this.lineIndex = 0; //歌词当前行数
+    this.lineHieght = -20; //偏移量
+
     // 初始化howler
     this._howler = null;
     Object.defineProperty(this, '_howler', { enumerable: false });
@@ -43,11 +50,23 @@ export default class {
   set progress(value) {
     if (this._howler) {
       this._howler.seek(value);
+      lyricPlayer.seek(value * 1000);
+      if (!this._playing) lyricPlayer.togglePlay();
     }
   }
 
   get duration() {
     return this._duration;
+  }
+
+  async initLyricPlayer(trackId) {
+    console.log(trackId);
+    const res = await getLyric(trackId);
+    lyricPlayer = new Lyric(res.data.lrc.lyric, ({ lineNum, txt }) => {
+      this.lineIndex = lineNum; // 索引
+      if (lineNum > 4) this.lineHieght = (lineNum - 3) * 12 - 20;
+    });
+    this.lyricLines = lyricPlayer.lines;
   }
 
   _init() {
@@ -73,6 +92,11 @@ export default class {
     ifUnplayableThen = 'playNextTrack'
   ) {
     return getTrackDetail(id).then((data) => {
+      //歌词
+      this.initLyricPlayer(id).then(() => {
+        lyricPlayer.play();
+        this.lineHieght = -20;
+      });
       const track = data.data.songs[0];
       this._currentTrack = track;
       return this._getAudioSourceFromNetease(track).then((source) => {
@@ -117,6 +141,7 @@ export default class {
   }
 
   _getNextTrack() {
+    lyricPlayer.stop();
     if (this._playNextList.length > 0) {
       const trackID = this._playNextList.shift();
       return [trackID, this.current];
@@ -141,6 +166,7 @@ export default class {
     this._replaceCurrentTrack(trackID);
     return true;
   }
+
   /*调用_getNextTrack()方法获取下一首歌曲的ID和索引，返回值为一个数组 [trackID, index]。
   判断如果trackID为undefined，表示没有下一首歌曲可播放，此时停止当前正在播放的音乐，并将_playing状态设置为false，然后返回false。
   如果存在下一首歌曲，则将index赋值给this.current，表示当前正在播放的歌曲索引。
@@ -168,6 +194,7 @@ export default class {
   }
 
   playOrPause() {
+    lyricPlayer.togglePlay();
     if (this._howler && this._howler.playing()) {
       this.pause();
     } else {
@@ -199,6 +226,7 @@ export default class {
   }
   static install(Vue) {
     Vue.prototype.$player = Vue.observable(new this());
+    window.$player = Vue.prototype.$player;
     Vue.component("Player", Player);
   }
 }

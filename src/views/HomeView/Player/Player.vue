@@ -1,9 +1,9 @@
 <template>
   <div
-    class="h-[13.4vw] bg-[#7f7f7f] dark:bg-[#f9fcfc] dark:text-[#403f47] w-[100%] text-[white] flex"
+    class="h-[11.4vw] bg-[#7f7f7f] dark:bg-[#f9fcfc] dark:text-[#403f47] w-[100%] text-[white] flex"
   >
     <!-- 播放 -->
-    <div class="w-[91vw] m-auto flex items-center justify-between">
+    <div class="w-[100%] m-auto flex items-center justify-between">
       <!-- 添加点击跳转播放页的点击事件 -->
       <div class="flex items-center" @click="()=>{this.$router.push('/PlayView')}">
         <div

@@ -597,7 +597,7 @@
       <HotTopic :hottopic="hottopic"></HotTopic>
 
       <!-- 音乐日历 -->
-      <musiccalender :calendar="calendar"></musiccalender>
+      <musiccalender :calendar="calendar" class="mb-[20vw]"></musiccalender>
     </div>
   </div>
 </template>
@@ -704,6 +704,7 @@ export default {
     //每日推荐
     DailyRecommened().then((res) => {
       this.menulist = res.data.data;
+      // console.log(res)
     });
     Banners().then((res) => {
       // console.log(res)

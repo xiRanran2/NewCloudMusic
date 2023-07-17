@@ -3,11 +3,12 @@ import HomeView from '../views/HomeView/HomeView.vue';
 import SongDetailsView from '../views/SongDetails/SongDetailsView.vue'
 import MVListView from  '@/views/HomeView/MVListView.vue'
 import PlayView from '../views/HomeView/PlayView.vue'
+import VideoPlayView from '../views/HomeView/VideoPlayView.vue'
 export default [
   //路径重定向
   {
     path: '/',
-    redirect: '/HomeView'
+    redirect: '/MVListView'
   },
   {
     path: '/SearchView',
@@ -42,7 +43,8 @@ export default [
     component:MVListView
   },
   {
-    path: '/MVView',
-    component: () => import('../views/HomeView/MVView.vue')
+    path: '/VideoPlayView',
+    name: 'VideoPlayView',
+    component: VideoPlayView,
   },
 ]
