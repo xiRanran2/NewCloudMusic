@@ -154,10 +154,11 @@
 
 <script>
 import store from 'storejs';
+import Vue from 'vue';
 import { playlistTracks, fetchLyricRequest } from '@/request';
 import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
-// Vue.component('VueSlider', VueSlider);
+Vue.component('VueSlider', VueSlider);
 export default {
   components: {
     VueSlider,
@@ -175,6 +176,8 @@ export default {
       songLength: 0, // 初始化歌曲长度为0
       AllSongs: [],
       SongLyric: '', //单曲歌词
+      arName: '',
+      
     };
   },
   mounted() {
@@ -198,6 +201,7 @@ export default {
         '',
         id
       );
+      store.set('cookie_music',this.menusongList)
     },
     //播放上一首
     playPrev() {

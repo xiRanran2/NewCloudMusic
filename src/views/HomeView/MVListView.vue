@@ -5,7 +5,7 @@
     >
       <!-- 头部 -->
       <header
-        class="px-[4.96vw] w-screen flex h-[17.9vw] items-center pl-[2vw] fixed top-0 left-0 bg-[#151515] dark:bg-[#fff] z-[99]"
+        class="px-[4.96vw] w-screen flex h-[17.9vw] items-center pl-[2vw] fixed top-0 left-0 bg-[#151515] dark:bg-[#fff] z-[10]"
       >
         <Icon
           @click.native="$router.push('/HomeView')"
@@ -44,7 +44,9 @@
                 @click="showThisVideo(item.id)"
               />
               <!-- 播放量 -->
-              <div class="flex absolute top-[1vw] right-[2vw] items-center dark:text-[#fff]">
+              <div
+                class="flex absolute top-[1vw] right-[2vw] items-center dark:text-[#fff]"
+              >
                 <Icon icon="ph:play" />
                 <span class="">{{ wan(item.playCount) }}</span>
               </div>
@@ -149,9 +151,9 @@ export default {
         return num;
       }
     },
-    showThisVideo(id){
-      console.log(id)
-      this.$router.push({name:'VideoPlayView',params:{id}})
+    showThisVideo(id) {
+      console.log(id);
+      this.$router.push({ name: 'VideoPlayView', params: { id } });
     },
   },
   created() {
@@ -173,7 +175,7 @@ export default {
 </script>
 
 <style>
-.van-tabs__line{
+.van-tabs__line {
   width: 20px !important;
 }
 .van-tabs__nav--line {

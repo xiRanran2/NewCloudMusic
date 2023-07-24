@@ -48,7 +48,7 @@
             <div
               v-for="(line, index) in $player.lyricLines"
               :key="index"
-              class="p-[4vw] text-[hsla(0,0%,88.2%,.8)] line-clamp-2 w-[100%] flex justify-center text-center"
+              class="py-[2vw] text-[hsla(0,0%,88.2%,.8)] line-clamp-2 w-[100%] flex justify-center text-center"
               :style="{
                 color:
                   index === $player.lineIndex ? '#fff' : 'hsla(0,0%,88.2%,.7)',
@@ -79,8 +79,10 @@
         </div>
         <!-- 收藏  下载 唱 评论 更多 -->
         <div class="flex justify-around text-[white] mt-[2.79vw]">
-          <Icon class="w-[9.64vw] h-[5.73vw]"
-            icon="streamline:interface-favorite-heart-reward-social-rating-media-heart-it-like-favorite-love" />
+          <div @click="love  = !love">
+           <Icon icon="ant-design:heart-filled" v-if="love" class="text-[#FE3C3A] w-[9.64vw] h-[5.73vw]"/>
+           <Icon v-else icon="ant-design:heart-outlined" class="w-[9.64vw] h-[5.73vw]"/>
+         </div>
           <Icon class="w-[9.64vw] h-[5.73vw]" icon="circum:save-down-1" />
           <Icon class="w-[9.64vw] h-[5.73vw]" icon="iconamoon:music-album-bold" />
           <van-icon class="w-[9.64vw] h-[5.73vw]" name="chat-o" badge="999+" />
@@ -89,12 +91,12 @@
         <!-- 滑块 -->
         <div class="h-[18.55vw] pt-[9vw] flex justify-center items-center">
           <div class="mr-[2vw] text-[#ffffff]">
-            {{ convertSecondsToFormattedTime($player._progress) }}
+            {{ timeModification($player._progress) }}
           </div>
           <vue-slider v-model="$player.progress" :duration="0" :process="true" tooltip="none" :drag-on-click="true"
             :min="0" :max="$player._duration" :interval="0.1" class="flex-1 mx-[2.5vw]" />
           <div class="text-[white]">
-            {{ convertSecondsToFormattedTime($player._duration) }}
+            {{ timeModification($player._duration) }}
           </div>
         </div>
         <!-- 随机 上一首 播放 下一首 菜单 -->
@@ -186,6 +188,7 @@ export default {
   },
   data() {
     return {
+      love: false,
       menusongList: [],
       show: false,
       lyrics: [],
@@ -202,13 +205,11 @@ export default {
       this.$router.go(-1);
     },
     // 分秒格式
-    convertSecondsToFormattedTime(seconds) {
-      const minutes = Math.floor((seconds % 3600) / 60);
-      const remainingSeconds = Math.floor(seconds % 60);
-      const formatNumber = (num) => {
-        return num.toString().padStart(2, '0');
-      };
-      return `${formatNumber(minutes)}:${formatNumber(remainingSeconds)}`;
+    timeModification(time) {
+      const minutes = Math.floor(time / 60);
+      return `${String(minutes).padStart(2, '0')}:${String(
+          Math.floor(time % 60)
+      ).padStart(2, '0')}`;
     },
     togglePlay() {
       this.play = !this.play;
